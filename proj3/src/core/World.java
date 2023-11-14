@@ -13,7 +13,7 @@ public class World {
     private int rwidth;
     private int rheight;
     private int[][] roomMoves;
-    private int size = 3;
+    private int size = 5;
 
     private TETile[][] halls;
 
@@ -32,8 +32,8 @@ public class World {
 
 
     private void worldMoves(int width, int height) {    // for duplicating rooms across the board
-        for (int x = 0; x < width; x += width/size) {
-            for (int y = 0; y < height; y += height/size) {
+        for (int x = 0; x < width; x += width/size) {   /* width/size*/
+            for (int y = 0; y < height; y += height/size ) {   /*height/size*/
                 rectangularRoom(x, y, width, height);
             }
         }
@@ -47,7 +47,7 @@ public class World {
         int roomWidth = 5;
         int roomHeight = 6;
         roomMoves = new int[][]{
-                {0,randomNum(3)},{2,randomNum(2)},{3,randomNum(4)},{4,randomNum(1)}
+                {0,randomNum(3)}    /*,{2,randomNum(2)},{3,randomNum(4)},{4,randomNum(1)*/
         };
 
         for (int i = 0; i < roomMoves.length; i++) {
