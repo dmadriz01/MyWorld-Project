@@ -39,7 +39,7 @@ public class World {
             for (int y = 0; y < height; y += 2 * scale) {   /*height/size*/
                 int roomx = randomNum(scale);
                 int roomy = randomNum(scale);
-                buildRectangularRoom(x+roomx, y+roomy, width, height);
+                buildRectangularRoom(x+roomx,y+roomy, width, height); /*x+roomx, y+roomy*/
             }
         }
     }
@@ -52,10 +52,14 @@ public class World {
         int roomWidth = randomNum(width / scale);
         int roomHeight = randomNum(height / scale);
 
-        for (int a = x, a <= roomWidth; a++){
+//        board[x][y] = Tileset.FLOWER;
 
+        for (int i = x; i <= x+roomWidth; i++){
+            for(int j=y; j <= y+roomHeight; j++){
+                if (i >= 0 && j >= 0 && i < width && j < height)
+                    board[i][j] = Tileset.FLOWER;
+            }
         }
-        board[x][y] = Tileset.FLOWER;
     }
 
     private void fillroom (int width, int height){
