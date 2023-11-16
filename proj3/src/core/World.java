@@ -3,11 +3,7 @@ package core;
 import tileengine.TETile;
 import tileengine.Tileset;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
+import java.util.*;
 
 
 public class World {
@@ -33,9 +29,10 @@ public class World {
 //        }
 //    }
 
-    private Collection<Integer>[] xbuckets;
 
     private HashMap<Integer, Integer> roomMap;
+//    private HashMap<Integer, Integer> roomdimensions;
+
 
 
 
@@ -43,6 +40,8 @@ public class World {
         board = new TETile[width][height];
         bboard = new boolean[width][height];
         roomMap = new HashMap<>();
+//        roomdimensions = new HashMap<>();
+
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -53,6 +52,12 @@ public class World {
 //        rheight = randomNum(size);
         worldMoves(width, height, scale);
         addBorders(width, height);
+
+//        for (Integer name: roomdimensions.keySet()) {
+//            String key = name.toString();
+//            String value = roomdimensions.get(name).toString();
+//            System.out.println(key + " " + value);
+//        }
     }
 
 
@@ -76,7 +81,7 @@ public class World {
 
 //        board[x][y] = Tileset.FLOWER;
 
-//        roomMap.put(roomWidth,roomHeight);
+//        List<Integer> valy = new ArrayList<>();
 
         for (int i = x; i <= x+roomWidth; i++){
             for(int j=y; j <= y+roomHeight; j++){
@@ -86,6 +91,10 @@ public class World {
                 }
             }
         }
+
+//        roomdimensions.put(roomWidth,roomHeight);
+        roomMap.put(x,y);
+        board[x][y] = Tileset.SAND;
     }
 
     private void buildhallways(){
@@ -111,7 +120,6 @@ public class World {
     private void addBorders(int width, int height) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-//                if (i > 0 && j > 0 && i < width-1 && j < height-1) {
                     if (bboard[i][j]) {
                         if (i - 1 >= 0 && !bboard[i - 1][j]) {  //left
                             board[i - 1][j] = Tileset.TREE;
