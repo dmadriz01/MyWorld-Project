@@ -53,12 +53,6 @@ public class World {
 //        rheight = randomNum(size);
         worldMoves(width, height, scale);
         addBorders(width, height);
-//        for (int i = 0; i < width; i++) {
-//            for (int j = 0; j < height; j++) {
-//                System.out.print(bboard[i][j] + " ");
-//            }
-//            System.out.println(); // Move to the next line for the next row
-//        }
     }
 
 
@@ -110,27 +104,32 @@ public class World {
 
     }
 
+    private boolean isConnected(){
+        return false;
+    }
+
     private void addBorders(int width, int height) {
-        for (int i = 0; i <= width; i++) {
-            for (int j = 0; j <= height; j++) {
-                if (bboard[i][j]) {
-                    if (!bboard[i - 1][j] && i - 1 > 0) {  //left
-                        board[i - 1][j] = Tileset.TREE;
-                    }
-                    if (!bboard[i + 1][j] && i + 1 < width) { //right
-                        board[i + 1][j] = Tileset.TREE;
-                    }
-                    if (!bboard[i][j - 1] && j - 1 > 0) { //down
-                        board[i][j - 1] = Tileset.TREE;
-                    }
-                    if (!bboard[i][j + 1] && j + 1 < height) { //up
-                        board[i][j + 1] = Tileset.TREE;
-                    }
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+//                if (i > 0 && j > 0 && i < width-1 && j < height-1) {
+                    if (bboard[i][j]) {
+                        if (i - 1 >= 0 && !bboard[i - 1][j]) {  //left
+                            board[i - 1][j] = Tileset.TREE;
+                        }
+                        if (i + 1 < width && !bboard[i + 1][j]) { //right
+                            board[i + 1][j] = Tileset.TREE;
+                        }
+                        if (j - 1 >= 0 && !bboard[i][j - 1]) { //down
+                            board[i][j - 1] = Tileset.TREE;
+                        }
+                        if (j + 1 < height && !bboard[i][j + 1]) { //up
+                            board[i][j + 1] = Tileset.TREE;
+                        }
                     }
                 }
             }
         }
-
+//    }
 
 
 
