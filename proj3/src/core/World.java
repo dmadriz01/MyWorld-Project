@@ -3,7 +3,12 @@ package core;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+
+
 
 public class World {
     //just the rooms and hallways
@@ -17,11 +22,27 @@ public class World {
     private int scale = 5; //comparable to holesize
 
     private TETile[][] halls;
+    private boolean[][] bboard;
+
+//    protected class Coordinate{
+//        int x;
+//        int y;
+//        public Coordinate(int x, int y){
+//            this.x = x;
+//            this.y = y;
+//        }
+//    }
+
+    private Collection<Integer>[] xbuckets;
+
+    private HashMap<Integer, Integer> roomMap;
 
 
 
     public World(int width, int height) {
         board = new TETile[width][height];
+        bboard = new boolean[width][height];
+        roomMap = new HashMap<>();
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -49,20 +70,35 @@ public class World {
     }
 
     private void buildRectangularRoom(int x, int y, int width, int height) {
-        int roomWidth = randomNum(width / scale);
-        int roomHeight = randomNum(height / scale);
+        int roomWidth = randomNum((width / scale)-3+1)+3;
+        int roomHeight = randomNum((height / scale)-3+1)+3;
 
 //        board[x][y] = Tileset.FLOWER;
+
+        roomMap.put(roomWidth,roomHeight);
 
         for (int i = x; i <= x+roomWidth; i++){
             for(int j=y; j <= y+roomHeight; j++){
                 if (i >= 0 && j >= 0 && i < width && j < height)
                     board[i][j] = Tileset.FLOWER;
+                    bboard[i][j] = true;
             }
         }
     }
 
+    private void buildhallways(){
+
+//        find midpoint
+//        connect midpoint to the rooms (to create L shape)
+//        helpoer method to build hallway from anchor point
+//        make sure anchor point is not in room
+        
+
+
+    }
+
     private void fillroom (int width, int height){
+
 
     }
 
