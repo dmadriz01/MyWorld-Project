@@ -8,14 +8,16 @@ import java.util.*;
 
 public class World {
     private static TETile[][] board;
-    private static final long SEED = 2873123;
+    private static final long SEED = 1;
     private static final Random random = new Random(SEED);
     private int scale = 5; //comparable to holesize
 
     private TETile[][] halls;
     private static boolean[][] bboard;
 
-    private HashMap<Integer, Integer> roomMap;
+    private ArrayList roomMap;
+
+//    private HashMap<Integer, Integer> roomDimensions;
 
 
 
@@ -23,7 +25,9 @@ public class World {
     public World(int width, int height) {
         board = new TETile[width][height];
         bboard = new boolean[width][height];
-        roomMap = new HashMap<>();
+        roomMap = new ArrayList<>();
+//                new int[width][height];  //make 50 the number of rooms
+//        roomDimensions = new HashMap<>();
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -32,12 +36,14 @@ public class World {
         }
         worldMoves(width, height, scale);
         addBorders(width, height);
+
+        //starts at 5
     }
 
 
     private void worldMoves(int width, int height, int scale) {    // for duplicating rooms across the board
-        for (int x = 0; x < width; x += 2 * scale) {   // iterates every other 5x5
-            for (int y = 0; y < height; y += 2 * scale) {   /*height/size*/
+        for (int x = 3; x < width-3; x += 3 * scale) {   // iterates every other 5x5
+            for (int y = 3; y < height-3; y += 3 *scale) {   /*height/size*/
                 int roomx = randomNum(scale);
                 int roomy = randomNum(scale);
                 buildRectangularRoom(x+roomx,y+roomy, width, height); /*x+roomx, y+roomy*/
@@ -50,31 +56,107 @@ public class World {
     }
 
     private void buildRectangularRoom(int x, int y, int width, int height) {
-        int roomWidth = randomNum((width / scale)-3+1)+3;
-        int roomHeight = randomNum((height / scale)-3+1)+3;
+        int roomWidth = randomNum((width / scale) - 3 + 1) + 3;
+        int roomHeight = randomNum((height / scale) - 3 + 1) + 3;
 
-        for (int i = x; i <= x+roomWidth; i++){
-            for(int j=y; j <= y+roomHeight; j++){
+//        roomDimensions.put(roomWidth, roomHeight);
+        int centersW = x + roomWidth / 2;
+        int centersH = y + roomHeight / 2;
+
+
+
+//        new int[] {centersW, centersH};
+
+
+        for (int i = x; i <= x + roomWidth; i++) {
+            for (int j = y; j <= y + roomHeight; j++) {
                 if (i >= 0 && j >= 0 && i < width && j < height) {
                     bboard[i][j] = true;
                     board[i][j] = Tileset.FLOWER;
                 }
             }
         }
-        roomMap.put(x,y);
-        board[x][y] = Tileset.SAND;
-    }
+        board[centersW][centersH] = Tileset.SAND;
 
-    private void buildhallways(){
+
+
+//        for (int j= 0; j< roomMap.size() ; j+=2) {
+//            int end = roomMap.size() <= j+2 ? roomMap.size() : j+3;
+//            if(roomMap.size() - j == 4) end = end +1;
+//            if(j != 9) result.add(mentah.subList(j, end));
+//        }
+
+
+
+//       if (centersW >= 0 && centersH >= 0 && centersW < width && centersH < height) {
+////            roomMap[centersW][centersH];
+//        }
+////        System.out.print(roomMap);
+//        if (x >= 2 && y >=2 && x < width - 2 && y < height - 2) {
+//            board[centersW][centersH] = Tileset.SAND;
+//        }
+
+
+//        for(Integer key: roomMap.keySet()){
+//            for(Integer value: roomMap.get(key)) {
+//                new LinkedList<>();
+//            }
+//        }
+//
+//
+//        for (int key :roomMap.keySet()) {
+//            int val1 = roomMap.get(key);
+//
+//            }
+//        }
+//
+
+//    int val2 = roomMap.get();
+//            if (roomMap.get(i) != null && roomMap.get(i + 1) != null) {
+//                    buildhallways(i, val1, i + 1, val2);
+
+//        for (int x1 = 0; x1 <= roomMap.size(); x1++){
+////            roomMap.get();
+        }
+//            for the x&y corner index
+
+
+    private void buildhallways(int centerW1, int centerH1, int centerW2, int centerH2) {
+        int midpointW = centerW1;
+        int midpointH = centerH1;
+        if (centerW1 != centerW2 || centerH1 != centerH2) {
+            midpointW = midpoint(centerW1, centerW2);
+            midpointH = midpoint(centerH1, centerH2);
+        }
+        if (midpointW < midpointH) {
+            for (int x = centerW1+(midpointW-centerW1); x <= centerW2+(midpointW-centerW1); x++){
+                    bboard[x][midpointH] = true;
+                    board[x][midpointH] = Tileset.FLOWER;
+                }
+            }
+        else {
+            for (int y = centerH1+(midpointH-centerH1); y <= centerH2+(midpointH-centerH1); y++){
+                bboard[midpointW][y] = true;
+                board[midpointW][y] = Tileset.FLOWER;
+            }
+        }
+        }
+//        for (int x =)
 
 //        find midpoint
 //        connect midpoint to the rooms (to create L shape)
 //        helpoer method to build hallway from anchor point
 //        make sure anchor point is not in room
-        
 
 
+
+
+    private int midpoint(int center1, int center2){
+        int sum = center1+center2;
+        return (int) Math.round((double) sum /2);
     }
+
+
 
     private boolean isConnected(){
         return false;

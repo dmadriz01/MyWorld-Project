@@ -8,8 +8,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int WIDTH = 25;
-        int HEIGHT = 25;
+        int WIDTH = 50;
+        int HEIGHT = 50;
 
         // build your own world!
         //running world
