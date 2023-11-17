@@ -62,7 +62,7 @@ public class World {
 //        roomDimensions.put(roomWidth, roomHeight);
         int centersW = x + roomWidth / 2;
         int centersH = y + roomHeight / 2;
-
+        buildhallways(centersW,centersH, width, height);
 
 
 //        new int[] {centersW, centersH};
@@ -77,6 +77,7 @@ public class World {
             }
         }
         board[centersW][centersH] = Tileset.SAND;
+
 
 
 
@@ -121,26 +122,27 @@ public class World {
 //            for the x&y corner index
 
 
-    private void buildhallways(int centerW1, int centerH1, int centerW2, int centerH2) {
-        int midpointW = centerW1;
-        int midpointH = centerH1;
-        if (centerW1 != centerW2 || centerH1 != centerH2) {
-            midpointW = midpoint(centerW1, centerW2);
-            midpointH = midpoint(centerH1, centerH2);
-        }
-        if (midpointW < midpointH) {
-            for (int x = centerW1+(midpointW-centerW1); x <= centerW2+(midpointW-centerW1); x++){
-                    bboard[x][midpointH] = true;
-                    board[x][midpointH] = Tileset.FLOWER;
+    private void buildhallways(int centerW, int centerH, int width, int height) {
+        if (centerW > 0 && centerW+(3*scale) < width) { //debug later  check x   + (width / scale)
+            for (int i = centerW; i <= centerW+(3*scale); i++) {
+                if (bboard[centerW + (3 * scale)][centerH]) {
+                    bboard[i][centerH] = true;
+                    board[i][centerH] = Tileset.FLOWER;
                 }
             }
-        else {
-            for (int y = centerH1+(midpointH-centerH1); y <= centerH2+(midpointH-centerH1); y++){
-                bboard[midpointW][y] = true;
-                board[midpointW][y] = Tileset.FLOWER;
+        }
+        if (centerH  > 0 && centerH+(3*scale) < height) { //debug later  check y   + (height / scale)
+            for (int j = centerH; j <= centerH+(3*scale); j++) {
+                bboard[centerW][j] = true;
+                board[centerW][j] = Tileset.FLOWER;
             }
         }
-        }
+    }
+//
+
+//
+//        }
+//        }
 //        for (int x =)
 
 //        find midpoint
@@ -150,11 +152,11 @@ public class World {
 
 
 
-
-    private int midpoint(int center1, int center2){
-        int sum = center1+center2;
-        return (int) Math.round((double) sum /2);
-    }
+//
+//    private int midpoint(int center1, int center2){
+//        int sum = center1+center2;
+//        return (int) Math.round((double) sum /2);
+//    }
 
 
 
