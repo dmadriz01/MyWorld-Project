@@ -8,7 +8,7 @@ import java.util.*;
 
 public class World {
     private static TETile[][] board;
-    private static final long SEED = 1;
+    private static final long SEED = 11000;
     private static final Random random = new Random(SEED);
     private int scale = 5; //comparable to holesize
 
@@ -59,13 +59,9 @@ public class World {
         int roomWidth = randomNum((width / scale) - 3 + 1) + 3;
         int roomHeight = randomNum((height / scale) - 3 + 1) + 3;
 
-//        roomDimensions.put(roomWidth, roomHeight);
         int centersW = x + roomWidth / 2;
         int centersH = y + roomHeight / 2;
-        buildhallways(centersW,centersH, width, height);
-
-
-//        new int[] {centersW, centersH};
+        buildhallways(centersW, centersH, width, height);
 
 
         for (int i = x; i <= x + roomWidth; i++) {
@@ -77,92 +73,96 @@ public class World {
             }
         }
         board[centersW][centersH] = Tileset.SAND;
-
-
-
-
-//        for (int j= 0; j< roomMap.size() ; j+=2) {
-//            int end = roomMap.size() <= j+2 ? roomMap.size() : j+3;
-//            if(roomMap.size() - j == 4) end = end +1;
-//            if(j != 9) result.add(mentah.subList(j, end));
-//        }
-
-
-
-//       if (centersW >= 0 && centersH >= 0 && centersW < width && centersH < height) {
-////            roomMap[centersW][centersH];
-//        }
-////        System.out.print(roomMap);
-//        if (x >= 2 && y >=2 && x < width - 2 && y < height - 2) {
-//            board[centersW][centersH] = Tileset.SAND;
-//        }
-
-
-//        for(Integer key: roomMap.keySet()){
-//            for(Integer value: roomMap.get(key)) {
-//                new LinkedList<>();
-//            }
-//        }
-//
-//
-//        for (int key :roomMap.keySet()) {
-//            int val1 = roomMap.get(key);
-//
-//            }
-//        }
-//
-
-//    int val2 = roomMap.get();
-//            if (roomMap.get(i) != null && roomMap.get(i + 1) != null) {
-//                    buildhallways(i, val1, i + 1, val2);
-
-//        for (int x1 = 0; x1 <= roomMap.size(); x1++){
-////            roomMap.get();
-        }
-//            for the x&y corner index
-
+    }
 
     private void buildhallways(int centerW, int centerH, int width, int height) {
-        if (centerW > 0 && centerW+(3*scale) < width) { //debug later  check x   + (width / scale)
-            for (int i = centerW; i <= centerW+(3*scale); i++) {
-                if (bboard[centerW + (3 * scale)][centerH]) {
+        if (centerW > 0 && centerW + (3 * scale) < width) { //debug later  check x   + (width / scale)
+            int endx = centerW + (3 * scale);
+            for (int i = centerW; i <= endx; i++) {   //i <= centerW + (3 * scale)
                     bboard[i][centerH] = true;
                     board[i][centerH] = Tileset.FLOWER;
+                    if (!bboard[endx][centerH]){
+                        addConnector(endx, centerH, width, height);
+                    }
+            }
+//            addConnector(endx, centerH, width, height);
+        }
+        if (centerH > 0 && centerH + (3 * scale) < height) { //debug later  check y   + (height / scale)
+            int endy = centerH + (3 * scale);
+            for (int j = centerH; j <= endy; j++) {   //j <= centerH + (3 * scale)
+                    bboard[centerW][j] = true;
+                    board[centerW][j] = Tileset.FLOWER;
+                    if (!bboard[centerW][endy]){
+                        addConnector(centerW,endy, width, height);
+                    }
+            }
+//            addConnector(centerW,endy, width, height);
+        }
+    }
+
+    private void addConnector(int lastx, int lasty, int width, int height) {
+        if (lastx >= 0 && lasty >= 0 && lastx < width-1 && lasty < height-1 && bboard[lastx][lasty-1]) {  //bottom
+
+            if (lastx <= height / 2) {
+                for (int i = lastx; bboard[i][lasty]; i++) {
+                    bboard[i][lasty] = true;
+                    board[i][lasty] = Tileset.FLOWER;
+                }
+            } else {
+                for (int i = lastx; bboard[i][lasty]; i--) {
+                    bboard[i][lasty] = true;
+                    board[i][lasty] = Tileset.FLOWER;
                 }
             }
         }
-        if (centerH  > 0 && centerH+(3*scale) < height) { //debug later  check y   + (height / scale)
-            for (int j = centerH; j <= centerH+(3*scale); j++) {
-                bboard[centerW][j] = true;
-                board[centerW][j] = Tileset.FLOWER;
+         else if (lastx >= 0 && lasty >= 0 && lastx < width-1 && lasty < height-1 && bboard[lastx][lasty+1]){  //top
+
+             if (lastx < height / 2) {
+                 for (int i = lastx; bboard[i][lasty]; i++) {
+                     bboard[i][lasty] = true;
+                     board[i][lasty] = Tileset.FLOWER;
+                 }
+             } else {
+                 for (int i = lastx; bboard[i][lasty]; i--) {
+                     bboard[i][lasty] = true;
+                     board[i][lasty] = Tileset.FLOWER;
+                 }
+             }
+         }
+        else if (lastx >= 0 && lasty >= 0 && lastx < width-1 && lasty < height-1 && bboard[lastx+1][lasty]) {  //right
+
+            if (lasty < width/2) {
+                for (int j = lasty; bboard[lastx][j]; j++) {
+                    bboard[lastx][j] = true;
+                    board[lastx][j] = Tileset.FLOWER;
+                }
+            } else {
+                for (int j = lasty; bboard[lastx][j]; j--) {
+                    bboard[lastx][j] = true;
+                    board[lastx][j] = Tileset.FLOWER;
+                }
+            }
+        }
+        else if (lastx >= 0 && lasty >= 0 && lastx < width-1 && lasty < height-1 && bboard[lastx-1][lasty]) {   //left
+
+            if (lasty < width/2) {
+                for (int j = lasty; bboard[lastx][j]; j++) {
+                    bboard[lastx][j] = true;
+                    board[lastx][j] = Tileset.FLOWER;
+                }
+            } else {
+                for (int j = lasty; bboard[lastx][j]; j--) {
+                    bboard[lastx][j] = true;
+                    board[lastx][j] = Tileset.FLOWER;
+                }
             }
         }
     }
-//
 
 //
-//        }
-//        }
-//        for (int x =)
-
-//        find midpoint
-//        connect midpoint to the rooms (to create L shape)
-//        helpoer method to build hallway from anchor point
-//        make sure anchor point is not in room
-
-
-
-//
-//    private int midpoint(int center1, int center2){
-//        int sum = center1+center2;
-//        return (int) Math.round((double) sum /2);
+//    private boolean isConnected(){
+//        return false;
 //    }
-
-
-
-    private boolean isConnected(){
-        return false;
-    }
 
     private void addBorders(int width, int height) {
         for (int i = 0; i < width; i++) {
