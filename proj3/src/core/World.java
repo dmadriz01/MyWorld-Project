@@ -29,6 +29,7 @@ public class World {
         for (Room room : roomSet) {
             System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
             System.out.println("Room dimensions: " + room.getWidth() + " x " + room.getHeight());
+            System.out.println("Room center: " + room.getCenterX() + " x " + room.getCenterY());
             System.out.println();
         }
 
@@ -186,7 +187,29 @@ public class World {
                     }
                 }
             }
+        addCorners(width, height);
         }
+
+    private void addCorners(int width, int height) {
+        for (int i = 0; i < width-1; i++) {
+            for (int j = 0; j < height-1; j++) {
+                if (((i-1) >= 0) && (j-1)>=0 && ((i+1) <= width) && ((j+1) <= height)) {
+                    if (bboard[i+1][j+1] && board[i][j] == Tileset.WATER) { //left bottom
+                        board[i][j] = Tileset.TREE;
+                    }
+                    if (bboard[i+1][j-1] && board[i][j] == Tileset.WATER) { //right bottom
+                        board[i][j] = Tileset.TREE;
+                    }
+                    if (bboard[i-1][j-1] && board[i][j] == Tileset.WATER) { //right top
+                        board[i][j] = Tileset.TREE;
+                    }
+                    if (bboard[i-1][j+1]  && board[i][j] == Tileset.WATER) {//left top
+                        board[i][j] = Tileset.TREE;
+                    }
+                }
+            }
+        }
+    }
 
 
     public TETile[][] getTiles() {
