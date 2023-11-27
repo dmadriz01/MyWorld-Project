@@ -22,13 +22,13 @@ public class AutograderBuddy {
      */
     public static TETile[][] getWorldFromInput(String input) {
 
-        int seed;
+        long seed;
         int WIDTH = 50;
         int HEIGHT = 50;
 
 
         String numberOnly= input.replaceAll("[^0-9]", "");
-        seed = Integer.parseInt(numberOnly);
+        seed = Long.parseLong(numberOnly);
 
         try {
             World w = new World(WIDTH, HEIGHT, seed);

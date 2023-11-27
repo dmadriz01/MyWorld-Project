@@ -28,7 +28,7 @@ public class World {
 
 
 
-    public World(int width, int height, int SEED) throws IOException {
+    public World(int width, int height, long SEED) throws IOException {
         random = new Random(SEED);
         board = new TETile[width][height];
         bboard = new boolean[width][height];
