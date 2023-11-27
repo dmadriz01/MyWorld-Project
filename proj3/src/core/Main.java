@@ -5,9 +5,11 @@ import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import java.io.IOException;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         int WIDTH = 50;
         int HEIGHT = 50;
 
@@ -32,6 +34,7 @@ public class Main {
                             seed += lowerkey;
                         }
                     }
+
                     w = new World(WIDTH, HEIGHT, Integer.parseInt(seed));
 
                     done = true;

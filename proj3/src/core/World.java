@@ -3,6 +3,9 @@ package core;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -25,7 +28,7 @@ public class World {
 
 
 
-    public World(int width, int height, int SEED) {
+    public World(int width, int height, int SEED) throws IOException {
         random = new Random(SEED);
         board = new TETile[width][height];
         bboard = new boolean[width][height];
@@ -36,6 +39,18 @@ public class World {
         allinput = new String();
 
         allinput += "N"+ SEED + "S";
+
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))){
+            writer.write(allinput);
+            writer.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+
+
 
 
 

@@ -20,15 +20,15 @@ public class AutograderBuddy {
      */
     public static TETile[][] getWorldFromInput(String input) {
 
-        int WIDTH = 50;
-        int HEIGHT = 50;
-
-        World w = new World(WIDTH, HEIGHT, 5);
-        //w.handle();
-
-        TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
-        ter.renderFrame(w.getTiles());
+//        int WIDTH = 50;
+//        int HEIGHT = 50;
+//
+//        World w = new World(WIDTH, HEIGHT, 5);
+//        //w.handle();
+//
+//        TERenderer ter = new TERenderer();
+//        ter.initialize(WIDTH, HEIGHT);
+//        ter.renderFrame(w.getTiles());
 //        return w;
 
         throw new RuntimeException("Please fill out AutograderBuddy!");
