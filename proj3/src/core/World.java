@@ -38,7 +38,7 @@ public class World {
         avatarY = randomNum(height);
         allinput = new String();
 
-        allinput += "N"+ SEED + "S";
+        allinput = "N"+ SEED + "S";
 
         try(BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))){
             writer.write(allinput);
