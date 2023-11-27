@@ -8,8 +8,8 @@ import java.util.*;
 
 public class World {
     private static TETile[][] board;
-    private static final long SEED = 100000;
-    private static final Random random = new Random(SEED);
+
+    private Random random;
     private int scale = 5; //comparable to holesize
 
     private TETile[][] halls;
@@ -19,12 +19,25 @@ public class World {
     private Set<Room> adjRooms;
     private Map<Room, Set<Room>> roomHash;
 
+    private int avatarX;
+    private int avatarY;
+    private String allinput;
 
-    public World(int width, int height) {
+
+
+    public World(int width, int height, int SEED) {
+        random = new Random(SEED);
         board = new TETile[width][height];
         bboard = new boolean[width][height];
         roomSet = new HashSet<>();
         roomHash = new HashMap<>();
+        avatarX = randomNum(width);
+        avatarY = randomNum(height);
+        allinput = new String();
+
+        allinput += "N"+ SEED + "S";
+
+
 
         for (Room room : roomSet) {
             System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
@@ -42,6 +55,11 @@ public class World {
         closestRooms(width, height);
         buildHallways(width, height);
         addBorders(width, height);
+
+        while(!bboard[avatarX][avatarY]){
+            avatarX = randomNum(width);
+            avatarY = randomNum(height);
+        }
     }
 
 
@@ -199,19 +217,33 @@ public class World {
 
 
     public TETile[][] getTiles() {
-        return board;
+        TETile[][] boardcopy = new TETile[board.length][board[0].length];
+        for (int i = 0; i< board.length; i++){
+            boardcopy[i] = Arrays.copyOf(board[i], board[0].length);
+        }
+        boardcopy[avatarX][avatarY]=Tileset.AVATAR;
+        return boardcopy;
     }
+
+
+    public void handle(char key){
+        char lower = Character.toLowerCase(key);
+        if (lower == 'w' && bboard[avatarX][avatarY+1]){
+            avatarY = avatarY+1;
+        }
+        if (lower == 's' && bboard[avatarX][avatarY-1]){
+            avatarY = avatarY-1;
+        }
+        if (lower =='a' && bboard[avatarX-1][avatarY]){
+            avatarX = avatarX-1;
+        }
+        if (lower == 'd' && bboard[avatarX+1][avatarY]){
+            avatarX = avatarX+1;
+        }
+
+    }
+
 }
-
-
-
-    // build your own world!
-
-
-//    helper method just for rooms
-    // helper method just for hallways
-
-    //generate all rooms and hallways connection
 
 
 

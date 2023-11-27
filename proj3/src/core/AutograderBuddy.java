@@ -23,7 +23,8 @@ public class AutograderBuddy {
         int WIDTH = 50;
         int HEIGHT = 50;
 
-        World w = new World(WIDTH, HEIGHT);
+        World w = new World(WIDTH, HEIGHT, 5);
+        //w.handle();
 
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
