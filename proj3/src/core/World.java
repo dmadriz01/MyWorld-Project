@@ -8,7 +8,7 @@ import java.util.*;
 
 public class World {
     private static TETile[][] board;
-    private static final long SEED = 10000;
+    private static final long SEED = 100000;
     private static final Random random = new Random(SEED);
     private int scale = 5; //comparable to holesize
 
@@ -16,16 +16,16 @@ public class World {
     private static boolean[][] bboard;
 
     private Set<Room> roomSet;
-
-//    private HashMap<Integer, Integer> roomDimensions;
-
-
+    private Set<Room> adjRooms;
+    private Map<Room, Set<Room>> roomHash;
 
 
     public World(int width, int height) {
         board = new TETile[width][height];
         bboard = new boolean[width][height];
         roomSet = new HashSet<>();
+        roomHash = new HashMap<>();
+
         for (Room room : roomSet) {
             System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
             System.out.println("Room dimensions: " + room.getWidth() + " x " + room.getHeight());
@@ -39,171 +39,157 @@ public class World {
             }
         }
         worldMoves(width, height, scale);
+        closestRooms(width, height);
+        buildHallways(width, height);
         addBorders(width, height);
     }
 
 
     private void worldMoves(int width, int height, int scale) {    // for duplicating rooms across the board
-        for (int x = 3; x < width-3; x += 3 * scale) {   // iterates every other 5x5
-            for (int y = 3; y < height-3; y += 3 *scale) {   /*height/size*/
+        for (int x = 3; x < width - 3; x += 3 * scale) {   // iterates every other 5x5
+            for (int y = 3; y < height - 3; y += 3 * scale) {   /*height/size*/
                 int roomx = randomNum(scale);
                 int roomy = randomNum(scale);
-                buildRectangularRoom(x+roomx,y+roomy, width, height); /*x+roomx, y+roomy*/
+                buildRectangularRoom(x + roomx, y + roomy, width, height); /*x+roomx, y+roomy*/
             }
         }
     }
 
-    private int randomNum (int bound) {
+    private int randomNum(int bound) {
         return random.nextInt(bound);
     }
 
-    private void buildRectangularRoom(int x, int y, int width, int height) {
+    private void buildRectangularRoom(int x, int y, int width, int height) { // helper
         int roomWidth = randomNum((width / scale) - 3 + 1) + 3;
         int roomHeight = randomNum((height / scale) - 3 + 1) + 3;
 
         int centersW = x + roomWidth / 2;
         int centersH = y + roomHeight / 2;
 
-        buildhallways(centersW, centersH, width, height);
-
         Room newRoom = new Room(x, y, roomWidth, roomHeight, centersW, centersH);
         roomSet.add(newRoom);
 
-        for (int i = x; i <= x + roomWidth; i++) {
-            for (int j = y; j <= y + roomHeight; j++) {
+        for (int i = x; i < x + roomWidth; i++) {
+            for (int j = y; j < y + roomHeight; j++) {
                 if (i >= 0 && j >= 0 && i < width && j < height) {
                     bboard[i][j] = true;
                     board[i][j] = Tileset.FLOWER;
                 }
             }
         }
-        board[centersW][centersH] = Tileset.SAND;
+        board[centersW][centersH] = Tileset.MOUNTAIN;
     }
 
-    private void buildhallways(int centerW, int centerH, int width, int height) {
-        if (centerW > 0 && centerW + (3 * scale) < width-3) { //debug later  check x   + (width / scale)
-            int endx = centerW + (3 * scale);
-            for (int i = centerW; i <= endx; i++) {   //i <= centerW + (3 * scale)
-                    bboard[i][centerH] = true;
-                    board[i][centerH] = Tileset.FLOWER;
-                    }
-            if (!bboard[endx+1][centerH]){
-                addConnector(endx+1, centerH, width, height);
-            }
-        }
-        if (centerH > 0 && centerH + (3 * scale) < height-3) { //debug later  check y   + (height / scale)
-            int endy = centerH + (3 * scale);
-
-            for (int j = centerH; j <= endy; j++) {   //j <= centerH + (3 * scale)
-                    bboard[centerW][j] = true;
-                    board[centerW][j] = Tileset.FLOWER;
-                    }
-            if (!bboard[centerW][endy+1]){
-                addConnector(centerW,endy+1, width, height);
+    public void closestRooms(int width, int height) {
+        for (Room room : roomSet) {
+            adjRooms = new HashSet<>();
+            roomHash.put(room, adjRooms);
+            while (roomHash.get(room).size() < 3) {
+                Room adjRoom = adjRoom(room, width, height);
+                adjRooms.add(adjRoom);
+                roomHash.put(room, adjRooms);
             }
         }
     }
 
-    private void addConnector(int lastx, int lasty, int width, int height) {
-        if (bboard[lastx][lasty-1]) {  //bottom   lastx >= 0 && lasty >= 0 && lastx < width-1 && lasty < height-1 &&
+    public Double dist(Room room, Room r) {
+        int x = Math.abs(room.getCenterX() - r.getCenterX());
+        int y = Math.abs(room.getCenterY() - r.getCenterY());
+        return (double) (x + y);
+    }
 
-            if (lastx <= width / 2) { //&& lasty
-                for (int i = lastx; bboard[i][lasty]; i++) {
-                    bboard[i][lasty] = true;
-                    board[i][lasty] = Tileset.FLOWER;
-                }
-            } else {
-                for (int i = lastx; bboard[i][lasty]; i--) {
-                    bboard[i][lasty] = true;
-                    board[i][lasty] = Tileset.FLOWER;
-                }
+    public Room adjRoom(Room room, int width, int height) {
+        Room adjRoom = room;
+        Double dist = width + .5;
+        for (Room r : roomSet) {
+            if (room == r || roomHash.get(room).contains(r)) {
+                continue;
+            }
+
+            Double actDis = dist(room, r); //distance between room and r
+            if (roomHash.get(room).contains(r)) {
+                break;
+            }
+            if (actDis < dist) {
+                adjRoom = r;
+                dist = actDis;
             }
         }
-         else if (bboard[lastx][lasty+1]){  //top   lastx >= 0 && lasty >= 0 && lastx < width-1 && lasty < height-1 &&
+        return adjRoom;
+    }
 
-             if (lastx < width / 2) {
-                 for (int i = lastx; bboard[i][lasty]; i++) {
-                     bboard[i][lasty] = true;
-                     board[i][lasty] = Tileset.FLOWER;
-                 }
-             } else {
-                 for (int i = lastx; bboard[i][lasty]; i--) {
-                     bboard[i][lasty] = true;
-                     board[i][lasty] = Tileset.FLOWER;
-                 }
-             }
-         }
-        else if (bboard[lastx+1][lasty]) {  //right   lastx >= 0 && lasty >= 0 && lastx < width-1 && lasty < height-1 &&
 
-            if (lasty < height/2) {
-                for (int j = lasty; bboard[lastx][j]; j++) {
-                    bboard[lastx][j] = true;
-                    board[lastx][j] = Tileset.FLOWER;
-                }
-            } else {
-                for (int j = lasty; bboard[lastx][j]; j--) {
-                    bboard[lastx][j] = true;
-                    board[lastx][j] = Tileset.FLOWER;
-                }
-            }
-        }
-        else if (bboard[lastx-1][lasty]) {   //left   lastx >= 0 && lasty >= 0 && lastx < width-1 && lasty < height-1 &&
+    private void buildHallways(int width, int height) {
+        for (Map.Entry<Room, Set<Room>> entry : roomHash.entrySet()) {
+            Room room1 = entry.getKey();
+            int startX = room1.getCenterX();
+            int startY = room1.getCenterY();
 
-            if (lasty < height/2) {
-                for (int j = lasty; bboard[lastx][j]; j++) {
-                    bboard[lastx][j] = true;
-                    board[lastx][j] = Tileset.FLOWER;
-                }
-            } else {
-                for (int j = lasty; bboard[lastx][j]; j--) {
-                    bboard[lastx][j] = true;
-                    board[lastx][j] = Tileset.FLOWER;
-                }
+            for (Room eachAdjRoom : entry.getValue()) {
+
+                if (board[startX][startY] == Tileset.MOUNTAIN || board[eachAdjRoom.getCenterX()][eachAdjRoom.getCenterY()] == Tileset.MOUNTAIN)
+                    connectCenters(startX, startY, eachAdjRoom.getCenterX(), eachAdjRoom.getCenterY());
+
             }
         }
     }
 
-//
-//    private boolean isConnected(){
-//        return false;
-//    }
+    private void connectCenters(int startX, int startY, int endX, int endY) {
+        int currentX = startX;
+        int currentY = startY;
+
+        while (currentX != endX || currentY != endY) {
+            if (currentX < endX) {
+                currentX++;
+            } else if (currentX > endX) {
+                currentX--;
+            } else if (currentY < endY) {
+                currentY++;
+            } else if (currentY > endY) {
+                currentY--;
+            }
+            bboard[currentX][currentY] = true;
+            board[currentX][currentY] = Tileset.FLOWER;
+        }
+    }
+
 
     private void addBorders(int width, int height) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                    if (bboard[i][j]) {
-                        if (i - 1 >= 0 && !bboard[i - 1][j]) {  //left
-                            board[i - 1][j] = Tileset.TREE;
-                        }
-                        if (i + 1 < width && !bboard[i + 1][j]) { //right
-                            board[i + 1][j] = Tileset.TREE;
-                        }
-                        if (j - 1 >= 0 && !bboard[i][j - 1]) { //down
-                            board[i][j - 1] = Tileset.TREE;
-                        }
-                        if (j + 1 < height && !bboard[i][j + 1]) { //up
-                            board[i][j + 1] = Tileset.TREE;
-                        }
+                if (bboard[i][j]) {
+                    if (i - 1 >= 0 && !bboard[i - 1][j]) {  //left
+                        board[i - 1][j] = Tileset.TREE;
+                    }
+                    if (i + 1 < width && !bboard[i + 1][j]) { //right
+                        board[i + 1][j] = Tileset.TREE;
+                    }
+                    if (j - 1 >= 0 && !bboard[i][j - 1]) { //down
+                        board[i][j - 1] = Tileset.TREE;
+                    }
+                    if (j + 1 < height && !bboard[i][j + 1]) { //up
+                        board[i][j + 1] = Tileset.TREE;
                     }
                 }
             }
-        addCorners(width, height);
         }
+        addCorners(width, height);
+    }
 
     private void addCorners(int width, int height) {
-        for (int i = 0; i < width-1; i++) {
-            for (int j = 0; j < height-1; j++) {
-                if (((i-1) >= 0) && (j-1)>=0 && ((i+1) <= width) && ((j+1) <= height)) {
-                    if (bboard[i+1][j+1] && board[i][j] == Tileset.WATER) { //left bottom
+        for (int i = 0; i < width - 1; i++) {
+            for (int j = 0; j < height - 1; j++) {
+                if (((i - 1) >= 0) && (j - 1) >= 0 && ((i + 1) <= width) && ((j + 1) <= height)) {
+                    if (bboard[i + 1][j + 1] && board[i][j] == Tileset.WATER) { //left bottom
                         board[i][j] = Tileset.TREE;
                     }
-                    if (bboard[i+1][j-1] && board[i][j] == Tileset.WATER) { //right bottom
+                    if (bboard[i + 1][j - 1] && board[i][j] == Tileset.WATER) { //right bottom
                         board[i][j] = Tileset.TREE;
                     }
-                    if (bboard[i-1][j-1] && board[i][j] == Tileset.WATER) { //right top
+                    if (bboard[i - 1][j - 1] && board[i][j] == Tileset.WATER) { //right top
                         board[i][j] = Tileset.TREE;
                     }
-                    if (bboard[i-1][j+1]  && board[i][j] == Tileset.WATER) {//left top
+                    if (bboard[i - 1][j + 1] && board[i][j] == Tileset.WATER) {//left top
                         board[i][j] = Tileset.TREE;
                     }
                 }
@@ -215,7 +201,7 @@ public class World {
     public TETile[][] getTiles() {
         return board;
     }
-
+}
 
 
 
@@ -228,4 +214,4 @@ public class World {
     //generate all rooms and hallways connection
 
 
-}
+
