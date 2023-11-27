@@ -4,6 +4,8 @@ import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import java.io.IOException;
+
 public class AutograderBuddy {
 
     /**
@@ -20,20 +22,27 @@ public class AutograderBuddy {
      */
     public static TETile[][] getWorldFromInput(String input) {
 
-//        int WIDTH = 50;
-//        int HEIGHT = 50;
-//
-//        World w = new World(WIDTH, HEIGHT, 5);
-//        //w.handle();
-//
-//        TERenderer ter = new TERenderer();
-//        ter.initialize(WIDTH, HEIGHT);
-//        ter.renderFrame(w.getTiles());
-//        return w;
+        int seed;
+        int WIDTH = 50;
+        int HEIGHT = 50;
 
-        throw new RuntimeException("Please fill out AutograderBuddy!");
+
+        String numberOnly= input.replaceAll("[^0-9]", "");
+        seed = Integer.parseInt(numberOnly);
+
+        try {
+            World w = new World(WIDTH, HEIGHT, seed);
+            return w.getTiles();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+//        throw new RuntimeException("Please fill out AutograderBuddy!");
 
     }
+
 
 
     /**
