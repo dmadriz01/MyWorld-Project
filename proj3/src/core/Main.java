@@ -2,8 +2,6 @@ package core;
 
 import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TERenderer;
-import tileengine.TETile;
-import tileengine.Tileset;
 
 import java.io.IOException;
 
@@ -13,72 +11,66 @@ public class Main {
         displayMain();
         int WIDTH = 50;
         int HEIGHT = 50;
-
-        // build your own world!
-        //running world
-
+        StringBuilder seed = new StringBuilder();
         World w = null;
-
-        boolean done = false;
-        while (!done){
-            if (StdDraw.hasNextKeyTyped()) {
-                char key = StdDraw.nextKeyTyped();
-                char lower = Character.toLowerCase(key);
-                if (lower == 'n'){
-                    String seed = "";
-                    while (true){
-                        if (StdDraw.hasNextKeyTyped()) {
-                            char lowerkey = Character.toLowerCase(StdDraw.nextKeyTyped());
-                            if (lowerkey =='s'){
-                                break;
-                            }
-                            seed += lowerkey;
-                        }
-                    }
-
-                    w = new World(WIDTH, HEIGHT, Integer.parseInt(seed));
-
-                    done = true;
-                }
-                else if (lower == 'l'){
-
-
-                    done = true;
-                }
-            }
-        }
-        if (w == null){
-            w = new World(WIDTH, HEIGHT, 5);
-        }
-
 
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
 
-        boolean quit = false;
+        boolean done = false;
+        boolean seedInputScreen = false;
 
-        while(true) {
-
+        while (!done) {
             if (StdDraw.hasNextKeyTyped()) {
-
                 char key = StdDraw.nextKeyTyped();
                 char lower = Character.toLowerCase(key);
-                if (key == ':'){
+                try {
+                    if (lower == 'n' && !seedInputScreen) {
+                        seedInputScreen = true;
+                    } else if (seedInputScreen) {
+                        if (lower == 's') {
+                            w = new World(WIDTH, HEIGHT, Integer.parseInt(seed.toString()));
+                            done = true;
+                        } else {
+                            seed.append(lower);
+                        }
+                    } else if (lower == 'l') {
+                        done = true;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace(); // Handle the exception appropriately
+                }
+            }
+
+            if (seedInputScreen) {
+                Screen.displaySeedInput(seed.toString());
+            } else {
+                displayMain();
+            }
+        }
+
+        if (w == null) {
+            w = new World(WIDTH, HEIGHT, 5);
+        }
+
+        boolean quit = false;
+
+        while (true) {
+            if (StdDraw.hasNextKeyTyped()) {
+                char key = StdDraw.nextKeyTyped();
+                char lower = Character.toLowerCase(key);
+                if (key == ':') {
                     quit = true;
                 }
-                if (quit && lower == 'q'){
+                if (quit && lower == 'q') {
+                    Screen.displayGameEnded();
                     break;
                 }
                 w.handle(key);
-
             }
-
             ter.renderFrame(w.getTiles());
         }
-        
-
     }
-
     private static void displayMain() {
         Screen screen = new Screen();
         screen.displayMain();

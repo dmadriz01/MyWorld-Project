@@ -29,5 +29,37 @@ public class Screen {
 
         StdDraw.show();
     }
-}
 
+    public static void displaySeedInput(String seedInput) {
+        StdDraw.clear(StdDraw.BLACK);
+        StdDraw.setXscale(0, WIDTH);
+        StdDraw.setYscale(0, HEIGHT);
+
+
+        StdDraw.setPenColor(StdDraw.WHITE);
+        double X = WIDTH / 2;
+        double Y = HEIGHT * 0.8;
+        StdDraw.text(X, Y, "Enter Seed");
+
+        // Draw seed input
+        double inX = WIDTH / 2.5;
+        double inY = HEIGHT * 0.6;
+        StdDraw.text(inX, inY,"Seed: " + seedInput);
+
+        StdDraw.show();
+    }
+
+    public static void displayGameEnded() {
+        StdDraw.clear(StdDraw.BLACK);
+        StdDraw.setXscale(0, WIDTH);
+        StdDraw.setYscale(0, HEIGHT);
+
+        StdDraw.setPenColor(StdDraw.WHITE);
+        double inX = WIDTH / 2;
+        double inY = HEIGHT * 0.8;
+        StdDraw.text(inX, inY, "Game Ended");
+
+        StdDraw.show();
+    }
+
+}
