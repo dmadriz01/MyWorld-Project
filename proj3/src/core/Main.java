@@ -10,6 +10,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        displayMain();
         int WIDTH = 50;
         int HEIGHT = 50;
 
@@ -74,6 +75,13 @@ public class Main {
 
             ter.renderFrame(w.getTiles());
         }
+        
 
     }
+
+    private static void displayMain() {
+        Screen screen = new Screen();
+        screen.displayMain();
+    }
+
 }

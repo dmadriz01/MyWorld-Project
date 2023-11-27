@@ -51,9 +51,6 @@ public class World {
 
 
 
-
-
-
         for (Room room : roomSet) {
             System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
             System.out.println("Room dimensions: " + room.getWidth() + " x " + room.getHeight());
