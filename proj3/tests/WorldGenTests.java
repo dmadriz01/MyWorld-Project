@@ -1,5 +1,5 @@
 import core.AutograderBuddy;
-import edu.princeton.cs.algs4.StdDraw;
+//import edu.princeton.cs.algs4.StdDraw;
 import org.junit.jupiter.api.Test;
 import tileengine.TERenderer;
 import tileengine.TETile;
@@ -17,7 +17,7 @@ public class WorldGenTests {
         TERenderer ter = new TERenderer();
         ter.initialize(tiles.length, tiles[0].length);
         ter.renderFrame(tiles);
-        StdDraw.pause(5000); // pause for 5 seconds so you can see the output
+//        StdDraw.pause(5000); // pause for 5 seconds so you can see the output
     }
 
     @Test
@@ -37,7 +37,7 @@ public class WorldGenTests {
         TERenderer ter = new TERenderer();
         ter.initialize(tiles.length, tiles[0].length);
         ter.renderFrame(tiles);
-        StdDraw.pause(5000); // pause for 5 seconds so you can see the output
+//        StdDraw.pause(5000); // pause for 5 seconds so you can see the output
     }
 
     @Test
@@ -52,6 +52,6 @@ public class WorldGenTests {
         ter.initialize(tiles2.length, tiles2[0].length);
         ter.renderFrame(tiles);
         ter.renderFrame(tiles2);
-        StdDraw.pause(5000); // pause for 5 seconds so you can see the output
+//        StdDraw.pause(5000); // pause for 5 seconds so you can see the output
     }
 }
