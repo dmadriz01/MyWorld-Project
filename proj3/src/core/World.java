@@ -10,7 +10,7 @@ import java.util.*;
 
 
 public class World {
-    private static TETile[][] board;
+    private TETile[][] board;
 
     private Random random;
     private int scale = 5; //comparable to holesize
@@ -28,8 +28,8 @@ public class World {
 
 
 
-    public World(int width, int height, long SEED) throws IOException {
-        random = new Random(SEED);
+    public World(int width, int height, long seed) throws IOException {
+        random = new Random(seed);
         board = new TETile[width][height];
         bboard = new boolean[width][height];
         roomSet = new HashSet<>();
@@ -38,11 +38,10 @@ public class World {
         avatarY = randomNum(height);
         allinput = new String();
 
-        allinput = "N"+ SEED + "S";
+        allinput = "N" + seed + "S";
 
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(allinput);
-            writer.close();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -68,7 +67,7 @@ public class World {
         buildHallways(width, height);
         addBorders(width, height);
 
-        while(!bboard[avatarX][avatarY]){
+        while (!bboard[avatarX][avatarY]) {
             avatarX = randomNum(width);
             avatarY = randomNum(height);
         }
@@ -157,9 +156,10 @@ public class World {
 
             for (Room eachAdjRoom : entry.getValue()) {
 
-                if (board[startX][startY] == Tileset.MOUNTAIN || board[eachAdjRoom.getCenterX()][eachAdjRoom.getCenterY()] == Tileset.MOUNTAIN)
+                if (board[startX][startY] == Tileset.MOUNTAIN
+                        || board[eachAdjRoom.getCenterX()][eachAdjRoom.getCenterY()] == Tileset.MOUNTAIN) {
                     connectCenters(startX, startY, eachAdjRoom.getCenterX(), eachAdjRoom.getCenterY());
-
+                }
             }
         }
     }
@@ -219,7 +219,7 @@ public class World {
                     if (bboard[i - 1][j - 1] && board[i][j] == Tileset.WATER) { //right top
                         board[i][j] = Tileset.TREE;
                     }
-                    if (bboard[i - 1][j + 1] && board[i][j] == Tileset.WATER) {//left top
+                    if (bboard[i - 1][j + 1] && board[i][j] == Tileset.WATER) { //left top
                         board[i][j] = Tileset.TREE;
                     }
                 }
@@ -230,27 +230,27 @@ public class World {
 
     public TETile[][] getTiles() {
         TETile[][] boardcopy = new TETile[board.length][board[0].length];
-        for (int i = 0; i< board.length; i++){
+        for (int i = 0; i < board.length; i++) {
             boardcopy[i] = Arrays.copyOf(board[i], board[0].length);
         }
-        boardcopy[avatarX][avatarY]=Tileset.AVATAR;
+        boardcopy[avatarX][avatarY] = Tileset.AVATAR;
         return boardcopy;
     }
 
 
     public void handle(char key){
         char lower = Character.toLowerCase(key);
-        if (lower == 'w' && bboard[avatarX][avatarY+1]){
-            avatarY = avatarY+1;
+        if (lower == 'w' && bboard[avatarX][avatarY + 1]) {
+            avatarY = avatarY + 1;
         }
-        if (lower == 's' && bboard[avatarX][avatarY-1]){
-            avatarY = avatarY-1;
+        if (lower == 's' && bboard[avatarX][avatarY - 1]) {
+            avatarY = avatarY - 1;
         }
-        if (lower =='a' && bboard[avatarX-1][avatarY]){
-            avatarX = avatarX-1;
+        if (lower == 'a' && bboard[avatarX - 1][avatarY]) {
+            avatarX = avatarX - 1;
         }
-        if (lower == 'd' && bboard[avatarX+1][avatarY]){
-            avatarX = avatarX+1;
+        if (lower == 'd' && bboard[avatarX + 1][avatarY]) {
+            avatarX = avatarX + 1;
         }
 
     }

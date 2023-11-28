@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import tileengine.TERenderer;
 import tileengine.TETile;
 
+import static org.junit.Assert.assertArrayEquals;
+
 public class WorldGenTests {
     @Test
     public void basicTest() {
@@ -14,6 +16,15 @@ public class WorldGenTests {
         ter.initialize(tiles.length, tiles[0].length);
         ter.renderFrame(tiles);
         StdDraw.pause(5000); // pause for 5 seconds so you can see the output
+    }
+
+    @Test
+    public void basicSeedTest() {
+        // TODO: write a test that calls getWorldFromInput twice, with "n123swasd:q" and with "lwasd"
+        TETile[][] tiles = AutograderBuddy.getWorldFromInput("n5197880843569031643s");
+        TETile[][] tiles2 = AutograderBuddy.getWorldFromInput("n5197880843569031643s");
+        assertArrayEquals(tiles, tiles2);
+
     }
 
     @Test

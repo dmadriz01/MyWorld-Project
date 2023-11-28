@@ -27,7 +27,7 @@ public class AutograderBuddy {
         int HEIGHT = 50;
 
 
-        String numberOnly= input.replaceAll("[^0-9]", "");
+        String numberOnly = input.replaceAll("[^0-9]", "");
         seed = Long.parseLong(numberOnly);
 
         try {
