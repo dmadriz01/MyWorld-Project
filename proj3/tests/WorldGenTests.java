@@ -21,7 +21,7 @@ public class WorldGenTests {
     }
 
     @Test
-    public void basicSeedTest() throws IOException {
+    public void basicSeedTest() {
         // TODO: write a test that calls getWorldFromInput twice, with "n123swasd:q" and with "lwasd"
         TETile[][] tiles = AutograderBuddy.getWorldFromInput("n5197880843569031643s");
         TETile[][] tiles2 = AutograderBuddy.getWorldFromInput("n5197880843569031643s");
@@ -30,7 +30,7 @@ public class WorldGenTests {
     }
 
     @Test
-    public void basicInteractivityTest() throws IOException {
+    public void basicInteractivityTest() {
         // TODO: write a test that uses an input like "n123swasdwasd"
         TETile[][] tiles = AutograderBuddy.getWorldFromInput("n123swasdwasd");
 
@@ -41,7 +41,7 @@ public class WorldGenTests {
     }
 
     @Test
-    public void basicSaveTest() throws IOException {
+    public void basicSaveTest() {
         // TODO: write a test that calls getWorldFromInput twice, with "n123swasd:q" and with "lwasd"
         TETile[][] tiles = AutograderBuddy.getWorldFromInput("n123swasd:q");
         TETile[][] tiles2 = AutograderBuddy.getWorldFromInput("lwasd");

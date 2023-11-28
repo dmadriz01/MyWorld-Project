@@ -28,7 +28,7 @@ public class World {
     private List<Room> adjRooms;
 
 
-    public World(int width, int height, long SEED) throws IOException {
+    public World(int width, int height, long SEED) {
         random = new Random(SEED);
         board = new TETile[width][height];
         bboard = new boolean[width][height];
@@ -43,13 +43,11 @@ public class World {
         bboardCopy = new boolean[width][height];
         mousehud = new HUD(width, height, bboard);
 
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(allinput);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
-            throw e;
         }
 
         for (Room room : roomList) {
@@ -79,6 +77,9 @@ public class World {
             avatarY = randomNum(height);
         }
     }
+
+
+
 
 
     private void worldMoves(int width, int height, int scale) {    // for duplicating rooms across the board

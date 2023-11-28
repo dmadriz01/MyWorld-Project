@@ -21,7 +21,7 @@ public class AutograderBuddy {
      * @param input the input string to feed to your program
      * @return the 2D TETile[][] representing the state of the world
      */
-    public static TETile[][] getWorldFromInput(String input) throws IOException {
+    public static TETile[][] getWorldFromInput(String input){
 
         int WIDTH = 50;
         int HEIGHT = 50;

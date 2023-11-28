@@ -25,23 +25,19 @@ public class Main {
             if (StdDraw.hasNextKeyTyped()) {
                 char key = StdDraw.nextKeyTyped();
                 char lower = Character.toLowerCase(key);
-                try {
-                    if (lower == 'n' && !seedInputScreen) {
-                        seedInputScreen = true;
-                    } else if (seedInputScreen) {
-                        if (Character.isDigit(lower)) {
-                            seed.append(lower);
-                        } else if (lower == 's' && !seed.isEmpty()) {
-                            w = new World(WIDTH, HEIGHT, Long.parseLong(seed.toString()));
+                if (lower == 'n' && !seedInputScreen) {
+                    seedInputScreen = true;
+                } else if (seedInputScreen) {
+                    if (Character.isDigit(lower)) {
+                        seed.append(lower);
+                    } else if (lower == 's' && !seed.isEmpty()) {
+                        w = new World(WIDTH, HEIGHT, Long.parseLong(seed.toString()));
 //                            hud.updateMousePosition();
 //                            hud.displayMouseHUD();
-                            done = true;
-                        }
-                    } else if (lower == 'l') {
                         done = true;
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } else if (lower == 'l') {
+                    done = true;
                 }
             }
             if (seedInputScreen) {
