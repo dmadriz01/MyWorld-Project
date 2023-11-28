@@ -25,6 +25,7 @@ public class World {
     private String allinput;
     private boolean seedInputPhase;
     private int flowers;
+    private HUD mousehud;
 
 
     public World(int width, int height, long SEED) throws IOException {
@@ -40,6 +41,7 @@ public class World {
         allinput = "N" + SEED + "S";
         flowers = 0;
         bboardCopy = new boolean[width][height];
+        mousehud = new HUD(width, height, bboard);
 
 
 
@@ -257,6 +259,7 @@ public class World {
     public TETile[][] getTiles() {
         TETile[][] boardcopy = new TETile[board.length][board[0].length];
         displayScore(board.length, board[0].length);
+        displayHUD();
         for (int i = 0; i < board.length; i++) {
             boardcopy[i] = Arrays.copyOf(board[i], board[0].length);
         }
@@ -316,9 +319,6 @@ public class World {
     }
 
 
-
-
-
     public void displayScore(int width, int height) {
         StdDraw.setPenColor(StdDraw.WHITE);
         StdDraw.setFont();
@@ -333,6 +333,14 @@ public class World {
         StdDraw.show();
     }
 
+    public boolean[][] getbboard() {
+        return bboard;
+    }
+
+    public void displayHUD(){
+        mousehud.updateMousePosition();
+        mousehud.displayMouseHUD();
+    }
 }
 
 

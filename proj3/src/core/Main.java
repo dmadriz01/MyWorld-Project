@@ -14,6 +14,7 @@ public class Main {
         StringBuilder seed = new StringBuilder();
         World w = null;
 
+
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
 
@@ -32,6 +33,8 @@ public class Main {
                             seed.append(lower);
                         } else if (lower == 's' && !seed.isEmpty()) {
                             w = new World(WIDTH, HEIGHT, Long.parseLong(seed.toString()));
+//                            hud.updateMousePosition();
+//                            hud.displayMouseHUD();
                             done = true;
                         }
                     } else if (lower == 'l') {
@@ -66,6 +69,7 @@ public class Main {
                     break;
                 }
                 w.handle(key);
+//                w.runGameloop();
             }
             ter.renderFrame(w.getTiles());
         }
