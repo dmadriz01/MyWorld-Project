@@ -17,8 +17,7 @@ public class World {
 
     private boolean[][] bboard;
     private boolean[][] bboardCopy;
-    private Set<Room> roomSet;
-    private Set<Room> adjRooms;
+    private List<Room>  roomList;
     private Map<Room, Set<Room>> roomHash;
     private int avatarX;
     private int avatarY;
@@ -26,13 +25,14 @@ public class World {
     private boolean seedInputPhase;
     private int flowers;
     private HUD mousehud;
+    private List<Room> adjRooms;
 
 
     public World(int width, int height, long SEED) throws IOException {
         random = new Random(SEED);
         board = new TETile[width][height];
         bboard = new boolean[width][height];
-        roomSet = new HashSet<>();
+        roomList = new ArrayList<>();
         roomHash = new HashMap<>();
         avatarX = randomNum(width);
         avatarY = randomNum(height);
@@ -44,7 +44,6 @@ public class World {
         mousehud = new HUD(width, height, bboard);
 
 
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(allinput);
             writer.close();
@@ -53,7 +52,7 @@ public class World {
             throw e;
         }
 
-        for (Room room : roomSet) {
+        for (Room room : roomList) {
             System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
             System.out.println("Room dimensions: " + room.getWidth() + " x " + room.getHeight());
             System.out.println("Room center: " + room.getCenterX() + " x " + room.getCenterY());
@@ -104,7 +103,7 @@ public class World {
         int centersH = y + roomHeight / 2;
 
         Room newRoom = new Room(x, y, roomWidth, roomHeight, centersW, centersH);
-        roomSet.add(newRoom);
+        roomList.add(newRoom);
 
         for (int i = x; i < x + roomWidth; i++) {
             for (int j = y; j < y + roomHeight; j++) {
@@ -114,21 +113,33 @@ public class World {
                 }
             }
         }
-        board[centersW][centersH] = Tileset.MOUNTAIN;
+//        board[centersW][centersH] = Tileset.MOUNTAIN;
     }
 
     public void closestRooms(int width, int height) {
-        for (Room room : roomSet) {
-            adjRooms = new TreeSet<>(Comparator.comparingDouble(r -> dist(room, r))); // Use a TreeSet with a custom comparator
-            roomHash.put(room, adjRooms);
-            while (roomHash.get(room).size() < 3) {
-                Room adjRoom = adjRoom(room, width, height);
-                adjRooms.add(adjRoom);
-                roomHash.put(room, adjRooms);
+        for (Room room : roomList) {
+            adjRooms = new ArrayList<>(); // Use a TreeSet with a custom comparator
+            while (adjRooms.size() < 1) {
+                adjRoom(room, width);
             }
         }
     }
 
+    public void adjRoom(Room room, int width) {
+        Double dist = width + .5;
+        for (Room r : roomList) {
+            if (room == r) {
+                continue;
+            }
+            Double actDis = dist(room, r); //distance between room and r
+            if (adjRooms.contains(r)) {
+                break;
+            }
+            if (actDis < dist) {
+                adjRooms.add(r);
+            }
+        }
+    }
 
     public Double dist(Room room, Room r) {
         int x = Math.abs(room.getCenterX() - r.getCenterX());
@@ -136,58 +147,14 @@ public class World {
         return (double) (x + y);
     }
 
-    public Room adjRoom(Room room, int width, int height) {
-        Room adjRoom = room;
-        Double dist = width + .5;
-        for (Room r : roomSet) {
-            if (room == r || roomHash.get(room).contains(r)) {
-                continue;
-            }
-
-            Double actDis = dist(room, r); //distance between room and r
-            if (roomHash.get(room).contains(r)) {
-                break;
-            }
-            if (actDis < dist) {
-                adjRoom = r;
-                dist = actDis;
-            }
-        }
-        return adjRoom;
-    }
-
-
-//    private void buildHallways(int width, int height) {
-//        for (Map.Entry<Room, Set<Room>> entry : roomHash.entrySet()) {
-//            Room room1 = entry.getKey();
-//            int startX = room1.getCenterX();
-//            int startY = room1.getCenterY();
-//
-//            for (Room eachAdjRoom : entry.getValue()) {
-//
-//                if (board[startX][startY] == Tileset.MOUNTAIN || board[eachAdjRoom.getCenterX()][eachAdjRoom.getCenterY()] == Tileset.MOUNTAIN)
-//                    connectCenters(startX, startY, eachAdjRoom.getCenterX(), eachAdjRoom.getCenterY());
-//
-//            }
-//        }
-//    }
-
 
     private void buildSortedHallways(int width, int height) {
-        for (Map.Entry<Room, Set<Room>> entry : roomHash.entrySet()) {
-            Room room1 = entry.getKey();
-            int startX = room1.getCenterX();
-            int startY = room1.getCenterY();
+        for (Room room: roomList) {
+            int startX = room.getCenterX();
+            int startY = room.getCenterY();
 
-            // Use TreeSet to have a sorted collection of adjacent rooms
-            TreeSet<Room> sortedAdjRooms = new TreeSet<>(Comparator.comparingDouble(r -> dist(room1, r)));
-
-            sortedAdjRooms.addAll(entry.getValue());
-
-            for (Room eachAdjRoom : sortedAdjRooms) {
-                if (board[startX][startY] == Tileset.MOUNTAIN || board[eachAdjRoom.getCenterX()][eachAdjRoom.getCenterY()] == Tileset.MOUNTAIN) {
-                    connectCenters(startX, startY, eachAdjRoom.getCenterX(), eachAdjRoom.getCenterY());
-                }
+            for (Room adjroom: adjRooms) {
+                connectCenters(startX, startY, adjroom.getCenterX(), adjroom.getCenterY());
             }
         }
     }
@@ -339,7 +306,15 @@ public class World {
 
     public void displayHUD(){
         mousehud.updateMousePosition();
-        mousehud.displayMouseHUD();
+        String hoverInfo = mousehud.getMouseHoverObject();
+        mousehud.displayMouseHUD(hoverInfo);
+
+//        if (mousehud.isStopFlickering()) {
+//
+//            mousehud.changeStopFlickering();
+//        } else {
+//            StdDraw.show();
+//        }
     }
 }
 
