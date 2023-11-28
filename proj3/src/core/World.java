@@ -1,5 +1,5 @@
 package core;
-import edu.princeton.cs.algs4.StdDraw;
+//import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TETile;
 import tileengine.Tileset;
 
@@ -226,8 +226,8 @@ public class World {
 
     public TETile[][] getTiles() {
         TETile[][] boardcopy = new TETile[board.length][board[0].length];
-        displayScore(board.length, board[0].length);
-        displayHUD();
+//        displayScore(board.length, board[0].length);
+//        displayHUD();
         for (int i = 0; i < board.length; i++) {
             boardcopy[i] = Arrays.copyOf(board[i], board[0].length);
         }
@@ -235,88 +235,88 @@ public class World {
         return boardcopy;
     }
 
-
-    public void handle(char key) {
-        char lower = Character.toLowerCase(key);
-
-        if (seedInputPhase) {
-
-
-            if (Character.isLowerCase(lower)) {
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
-                    writer.write(lower);
-                    writer.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (lower == 's') {
-                seedInputPhase = false;
-            }
-        }
-
-        if (lower == 'w' && bboard[avatarX][avatarY + 1]) {
-            avatarY = avatarY + 1;
-        }
-        if (lower == 's' && bboard[avatarX][avatarY - 1]) {
-            avatarY = avatarY - 1;
-        }
-        if (lower == 'a' && bboard[avatarX - 1][avatarY]) {
-            avatarX = avatarX - 1;
-        }
-        if (lower == 'd' && bboard[avatarX + 1][avatarY]) {
-            avatarX = avatarX + 1;
-        }
-
-        if (lower == 'w' || lower == 's' || lower == 'a' || lower == 'd') {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
-                writer.write(lower);
-                writer.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (lower == 'c') {
-            if (bboardCopy[avatarX][avatarY]){
-                flowers++;
-            }
-            board[avatarX][avatarY] = Tileset.GRASS;
-            bboardCopy[avatarX][avatarY] = false;
-        }
-    }
-
-
-    public void displayScore(int width, int height) {
-        StdDraw.setPenColor(StdDraw.WHITE);
-        StdDraw.setFont();
-
-        int flower = flowers;
-
-        double X = width -5;
-        double Y = height -2;
-
-        StdDraw.text(X, Y, "Score: " + flower);
-
-        StdDraw.show();
-    }
-
-    public boolean[][] getbboard() {
-        return bboard;
-    }
-
-    public void displayHUD(){
-        mousehud.updateMousePosition();
-        String hoverInfo = mousehud.getMouseHoverObject();
-        mousehud.displayMouseHUD(hoverInfo);
-
-//        if (mousehud.isStopFlickering()) {
 //
-//            mousehud.changeStopFlickering();
-//        } else {
-//            StdDraw.show();
+//    public void handle(char key) {
+//        char lower = Character.toLowerCase(key);
+//
+//        if (seedInputPhase) {
+//
+//
+//            if (Character.isLowerCase(lower)) {
+//                try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
+//                    writer.write(lower);
+//                    writer.flush();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            if (lower == 's') {
+//                seedInputPhase = false;
+//            }
 //        }
-    }
+//
+//        if (lower == 'w' && bboard[avatarX][avatarY + 1]) {
+//            avatarY = avatarY + 1;
+//        }
+//        if (lower == 's' && bboard[avatarX][avatarY - 1]) {
+//            avatarY = avatarY - 1;
+//        }
+//        if (lower == 'a' && bboard[avatarX - 1][avatarY]) {
+//            avatarX = avatarX - 1;
+//        }
+//        if (lower == 'd' && bboard[avatarX + 1][avatarY]) {
+//            avatarX = avatarX + 1;
+//        }
+//
+//        if (lower == 'w' || lower == 's' || lower == 'a' || lower == 'd') {
+//            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
+//                writer.write(lower);
+//                writer.flush();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        if (lower == 'c') {
+//            if (bboardCopy[avatarX][avatarY]){
+//                flowers++;
+//            }
+//            board[avatarX][avatarY] = Tileset.GRASS;
+//            bboardCopy[avatarX][avatarY] = false;
+//        }
+//    }
+//
+//
+//////    public void displayScore(int width, int height) {
+//////        StdDraw.setPenColor(StdDraw.WHITE);
+//////        StdDraw.setFont();
+//////
+//////        int flower = flowers;
+//////
+//////        double X = width -5;
+//////        double Y = height -2;
+//////
+//////        StdDraw.text(X, Y, "Score: " + flower);
+//////
+//////        StdDraw.show();
+//////    }
+////
+////    public boolean[][] getbboard() {
+////        return bboard;
+////    }
+////
+////    public void displayHUD(){
+////        mousehud.updateMousePosition();
+////        String hoverInfo = mousehud.getMouseHoverObject();
+////        mousehud.displayMouseHUD(hoverInfo);
+////
+//////        if (mousehud.isStopFlickering()) {
+//////
+//////            mousehud.changeStopFlickering();
+//////        } else {
+//////            StdDraw.show();
+//////        }
+////    }
 }
 
 

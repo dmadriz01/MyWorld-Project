@@ -64,8 +64,7 @@ public class Main {
                     Screen.displayGameEnded();
                     break;
                 }
-                w.handle(key);
-//                w.runGameloop();
+//                w.handle(key);
             }
             ter.renderFrame(w.getTiles());
         }
