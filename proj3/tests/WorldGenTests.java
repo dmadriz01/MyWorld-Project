@@ -4,11 +4,13 @@ import org.junit.jupiter.api.Test;
 import tileengine.TERenderer;
 import tileengine.TETile;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertArrayEquals;
 
 public class WorldGenTests {
     @Test
-    public void basicTest() {
+    public void basicTest() throws IOException {
         // put different seeds here to test different worlds
         TETile[][] tiles = AutograderBuddy.getWorldFromInput("n5197880843569031643s");
 
@@ -19,7 +21,7 @@ public class WorldGenTests {
     }
 
     @Test
-    public void basicSeedTest() {
+    public void basicSeedTest() throws IOException {
         // TODO: write a test that calls getWorldFromInput twice, with "n123swasd:q" and with "lwasd"
         TETile[][] tiles = AutograderBuddy.getWorldFromInput("n5197880843569031643s");
         TETile[][] tiles2 = AutograderBuddy.getWorldFromInput("n5197880843569031643s");
@@ -28,7 +30,7 @@ public class WorldGenTests {
     }
 
     @Test
-    public void basicInteractivityTest() {
+    public void basicInteractivityTest() throws IOException {
         // TODO: write a test that uses an input like "n123swasdwasd"
         TETile[][] tiles = AutograderBuddy.getWorldFromInput("n123swasdwasd");
 
@@ -39,7 +41,7 @@ public class WorldGenTests {
     }
 
     @Test
-    public void basicSaveTest() {
+    public void basicSaveTest() throws IOException {
         // TODO: write a test that calls getWorldFromInput twice, with "n123swasd:q" and with "lwasd"
         TETile[][] tiles = AutograderBuddy.getWorldFromInput("n123swasd:q");
         TETile[][] tiles2 = AutograderBuddy.getWorldFromInput("lwasd");

@@ -28,20 +28,19 @@ public class Main {
                     if (lower == 'n' && !seedInputScreen) {
                         seedInputScreen = true;
                     } else if (seedInputScreen) {
-                        if (lower == 's') {
-                            w = new World(WIDTH, HEIGHT, Integer.parseInt(seed.toString()));
-                            done = true;
-                        } else {
+                        if (Character.isDigit(lower)) {
                             seed.append(lower);
+                        } else if (lower == 's' && !seed.isEmpty()) {
+                            w = new World(WIDTH, HEIGHT, Long.parseLong(seed.toString()));
+                            done = true;
                         }
                     } else if (lower == 'l') {
                         done = true;
                     }
                 } catch (IOException e) {
-                    e.printStackTrace(); // Handle the exception appropriately
+                    e.printStackTrace();
                 }
             }
-
             if (seedInputScreen) {
                 Screen.displaySeedInput(seed.toString());
             } else {
@@ -75,5 +74,7 @@ public class Main {
         Screen screen = new Screen();
         screen.displayMain();
     }
+
+
 
 }

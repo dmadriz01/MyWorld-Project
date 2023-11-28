@@ -6,6 +6,8 @@ public class Screen {
     private static final int HEIGHT = 50;
     private static final double TEXT_SCALE = 0.03; // Adjust this scale factor
 
+    private int flowerCount;
+
     public void displayMain() {
         StdDraw.clear(StdDraw.BLACK);
         StdDraw.setXscale(0, WIDTH);
@@ -42,12 +44,12 @@ public class Screen {
         StdDraw.text(X, Y, "Enter Seed");
 
         // Draw seed input
-        double inX = WIDTH / 2.5;
-        double inY = HEIGHT * 0.6;
-        StdDraw.text(inX, inY,"Seed: " + seedInput);
 
+        StdDraw.text(X, Y-5,"Seed: " + seedInput);
+        StdDraw.text(X, Y-10, "Press S to Start");
         StdDraw.show();
     }
+
 
     public static void displayGameEnded() {
         StdDraw.clear(StdDraw.BLACK);

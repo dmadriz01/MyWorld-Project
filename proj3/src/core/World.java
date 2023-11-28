@@ -1,5 +1,5 @@
 package core;
-
+import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TETile;
 import tileengine.Tileset;
 
@@ -15,21 +15,20 @@ public class World {
     private Random random;
     private int scale = 5; //comparable to holesize
 
-    private TETile[][] halls;
     private boolean[][] bboard;
-
+    private boolean[][] bboardCopy;
     private Set<Room> roomSet;
     private Set<Room> adjRooms;
     private Map<Room, Set<Room>> roomHash;
-
     private int avatarX;
     private int avatarY;
     private String allinput;
+    private boolean seedInputPhase;
+    private int flowers;
 
 
-
-    public World(int width, int height, long seed) throws IOException {
-        random = new Random(seed);
+    public World(int width, int height, long SEED) throws IOException {
+        random = new Random(SEED);
         board = new TETile[width][height];
         bboard = new boolean[width][height];
         roomSet = new HashSet<>();
@@ -37,18 +36,20 @@ public class World {
         avatarX = randomNum(width);
         avatarY = randomNum(height);
         allinput = new String();
+        seedInputPhase = true;
+        allinput = "N" + SEED + "S";
+        flowers = 0;
+        bboardCopy = new boolean[width][height];
 
-        allinput = "N" + seed + "S";
+
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(allinput);
-        }
-        catch (IOException e) {
+            writer.close();
+        } catch (IOException e) {
             e.printStackTrace();
             throw e;
         }
-
-
 
         for (Room room : roomSet) {
             System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
@@ -64,8 +65,13 @@ public class World {
         }
         worldMoves(width, height, scale);
         closestRooms(width, height);
-        buildHallways(width, height);
+        buildSortedHallways(width, height);
         addBorders(width, height);
+
+        for (int i = 0; i < width; i++) {
+            System.arraycopy(bboard[i], 0, bboardCopy[i], 0, height);
+        }
+
 
         while (!bboard[avatarX][avatarY]) {
             avatarX = randomNum(width);
@@ -111,7 +117,7 @@ public class World {
 
     public void closestRooms(int width, int height) {
         for (Room room : roomSet) {
-            adjRooms = new HashSet<>();
+            adjRooms = new TreeSet<>(Comparator.comparingDouble(r -> dist(room, r))); // Use a TreeSet with a custom comparator
             roomHash.put(room, adjRooms);
             while (roomHash.get(room).size() < 3) {
                 Room adjRoom = adjRoom(room, width, height);
@@ -120,6 +126,7 @@ public class World {
             }
         }
     }
+
 
     public Double dist(Room room, Room r) {
         int x = Math.abs(room.getCenterX() - r.getCenterX());
@@ -148,16 +155,35 @@ public class World {
     }
 
 
-    private void buildHallways(int width, int height) {
+//    private void buildHallways(int width, int height) {
+//        for (Map.Entry<Room, Set<Room>> entry : roomHash.entrySet()) {
+//            Room room1 = entry.getKey();
+//            int startX = room1.getCenterX();
+//            int startY = room1.getCenterY();
+//
+//            for (Room eachAdjRoom : entry.getValue()) {
+//
+//                if (board[startX][startY] == Tileset.MOUNTAIN || board[eachAdjRoom.getCenterX()][eachAdjRoom.getCenterY()] == Tileset.MOUNTAIN)
+//                    connectCenters(startX, startY, eachAdjRoom.getCenterX(), eachAdjRoom.getCenterY());
+//
+//            }
+//        }
+//    }
+
+
+    private void buildSortedHallways(int width, int height) {
         for (Map.Entry<Room, Set<Room>> entry : roomHash.entrySet()) {
             Room room1 = entry.getKey();
             int startX = room1.getCenterX();
             int startY = room1.getCenterY();
 
-            for (Room eachAdjRoom : entry.getValue()) {
+            // Use TreeSet to have a sorted collection of adjacent rooms
+            TreeSet<Room> sortedAdjRooms = new TreeSet<>(Comparator.comparingDouble(r -> dist(room1, r)));
 
-                if (board[startX][startY] == Tileset.MOUNTAIN
-                        || board[eachAdjRoom.getCenterX()][eachAdjRoom.getCenterY()] == Tileset.MOUNTAIN) {
+            sortedAdjRooms.addAll(entry.getValue());
+
+            for (Room eachAdjRoom : sortedAdjRooms) {
+                if (board[startX][startY] == Tileset.MOUNTAIN || board[eachAdjRoom.getCenterX()][eachAdjRoom.getCenterY()] == Tileset.MOUNTAIN) {
                     connectCenters(startX, startY, eachAdjRoom.getCenterX(), eachAdjRoom.getCenterY());
                 }
             }
@@ -219,7 +245,7 @@ public class World {
                     if (bboard[i - 1][j - 1] && board[i][j] == Tileset.WATER) { //right top
                         board[i][j] = Tileset.TREE;
                     }
-                    if (bboard[i - 1][j + 1] && board[i][j] == Tileset.WATER) { //left top
+                    if (bboard[i - 1][j + 1] && board[i][j] == Tileset.WATER) {//left top
                         board[i][j] = Tileset.TREE;
                     }
                 }
@@ -230,6 +256,7 @@ public class World {
 
     public TETile[][] getTiles() {
         TETile[][] boardcopy = new TETile[board.length][board[0].length];
+        displayScore(board.length, board[0].length);
         for (int i = 0; i < board.length; i++) {
             boardcopy[i] = Arrays.copyOf(board[i], board[0].length);
         }
@@ -238,8 +265,25 @@ public class World {
     }
 
 
-    public void handle(char key){
+    public void handle(char key) {
         char lower = Character.toLowerCase(key);
+
+        if (seedInputPhase) {
+
+
+            if (Character.isLowerCase(lower)) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
+                    writer.write(lower);
+                    writer.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (lower == 's') {
+                seedInputPhase = false;
+            }
+        }
+
         if (lower == 'w' && bboard[avatarX][avatarY + 1]) {
             avatarY = avatarY + 1;
         }
@@ -253,13 +297,44 @@ public class World {
             avatarX = avatarX + 1;
         }
 
+        if (lower == 'w' || lower == 's' || lower == 'a' || lower == 'd') {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
+                writer.write(lower);
+                writer.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (lower == 'c') {
+            if (bboardCopy[avatarX][avatarY]){
+                flowers++;
+            }
+            board[avatarX][avatarY] = Tileset.GRASS;
+            bboardCopy[avatarX][avatarY] = false;
+        }
     }
 
-    public void addallinput(){
 
+
+
+
+    public void displayScore(int width, int height) {
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.setFont();
+
+        int flower = flowers;
+
+        double X = width -5;
+        double Y = height -2;
+
+        StdDraw.text(X, Y, "Score: " + flower);
+
+        StdDraw.show();
     }
 
 }
+
 
 
 
