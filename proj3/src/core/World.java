@@ -16,7 +16,7 @@ public class World {
     private int scale = 5; //comparable to holesize
 
     private TETile[][] halls;
-    private static boolean[][] bboard;
+    private boolean[][] bboard;
 
     private Set<Room> roomSet;
     private Set<Room> adjRooms;
@@ -252,6 +252,10 @@ public class World {
         if (lower == 'd' && bboard[avatarX + 1][avatarY]) {
             avatarX = avatarX + 1;
         }
+
+    }
+
+    public void addallinput(){
 
     }
 
