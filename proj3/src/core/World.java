@@ -1,11 +1,7 @@
 package core;
-//import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TETile;
 import tileengine.Tileset;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 
@@ -24,38 +20,15 @@ public class World {
     private String allinput;
     private boolean seedInputPhase;
     private int flowers;
-//    private HUD mousehud;
     private List<Room> adjRooms;
 
 
-    public World(int width, int height, long SEED) {
-        random = new Random(SEED);
+    public World(int width, int height, long seed) {
+        random = new Random(seed);
         board = new TETile[width][height];
         bboard = new boolean[width][height];
         roomList = new ArrayList<>();
         roomHash = new HashMap<>();
-//        avatarX = randomNum(width);
-//        avatarY = randomNum(height);
-//        allinput = new String();
-//        seedInputPhase = true;
-//        allinput = "N" + SEED + "S";
-//        flowers = 0;
-//        bboardCopy = new boolean[width][height];
-//        mousehud = new HUD(width, height, bboard);
-
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
-//            writer.write(allinput);
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        for (Room room : roomList) {
-//            System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
-//            System.out.println("Room dimensions: " + room.getWidth() + " x " + room.getHeight());
-//            System.out.println("Room center: " + room.getCenterX() + " x " + room.getCenterY());
-//            System.out.println();
-//        }
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -67,15 +40,7 @@ public class World {
         buildSortedHallways(width, height);
         addBorders(width, height);
 
-//        for (int i = 0; i < width; i++) {
-//            System.arraycopy(bboard[i], 0, bboardCopy[i], 0, height);
-//        }
-//
-//
-//        while (!bboard[avatarX][avatarY]) {
-//            avatarX = randomNum(width);
-//            avatarY = randomNum(height);
-//        }
+
     }
 
 
@@ -114,7 +79,6 @@ public class World {
                 }
             }
         }
-//        board[centersW][centersH] = Tileset.MOUNTAIN;
     }
 
     public void closestRooms(int width, int height) {
@@ -226,8 +190,6 @@ public class World {
 
     public TETile[][] getTiles() {
         TETile[][] boardcopy = new TETile[board.length][board[0].length];
-//        displayScore(board.length, board[0].length);
-//        displayHUD();
         for (int i = 0; i < board.length; i++) {
             boardcopy[i] = Arrays.copyOf(board[i], board[0].length);
         }
@@ -235,90 +197,4 @@ public class World {
         return boardcopy;
     }
 
-//
-//    public void handle(char key) {
-//        char lower = Character.toLowerCase(key);
-//
-//        if (seedInputPhase) {
-//
-//
-//            if (Character.isLowerCase(lower)) {
-//                try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
-//                    writer.write(lower);
-//                    writer.flush();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (lower == 's') {
-//                seedInputPhase = false;
-//            }
-//        }
-//
-//        if (lower == 'w' && bboard[avatarX][avatarY + 1]) {
-//            avatarY = avatarY + 1;
-//        }
-//        if (lower == 's' && bboard[avatarX][avatarY - 1]) {
-//            avatarY = avatarY - 1;
-//        }
-//        if (lower == 'a' && bboard[avatarX - 1][avatarY]) {
-//            avatarX = avatarX - 1;
-//        }
-//        if (lower == 'd' && bboard[avatarX + 1][avatarY]) {
-//            avatarX = avatarX + 1;
-//        }
-//
-//        if (lower == 'w' || lower == 's' || lower == 'a' || lower == 'd') {
-//            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
-//                writer.write(lower);
-//                writer.flush();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        if (lower == 'c') {
-//            if (bboardCopy[avatarX][avatarY]){
-//                flowers++;
-//            }
-//            board[avatarX][avatarY] = Tileset.GRASS;
-//            bboardCopy[avatarX][avatarY] = false;
-//        }
-//    }
-//
-//
-//////    public void displayScore(int width, int height) {
-//////        StdDraw.setPenColor(StdDraw.WHITE);
-//////        StdDraw.setFont();
-//////
-//////        int flower = flowers;
-//////
-//////        double X = width -5;
-//////        double Y = height -2;
-//////
-//////        StdDraw.text(X, Y, "Score: " + flower);
-//////
-//////        StdDraw.show();
-//////    }
-////
-////    public boolean[][] getbboard() {
-////        return bboard;
-////    }
-////
-////    public void displayHUD(){
-////        mousehud.updateMousePosition();
-////        String hoverInfo = mousehud.getMouseHoverObject();
-////        mousehud.displayMouseHUD(hoverInfo);
-////
-//////        if (mousehud.isStopFlickering()) {
-//////
-//////            mousehud.changeStopFlickering();
-//////        } else {
-//////            StdDraw.show();
-//////        }
-////    }
 }
-
-
-
-
