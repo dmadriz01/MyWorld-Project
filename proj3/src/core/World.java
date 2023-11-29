@@ -367,5 +367,5 @@ public class World {
 
     public boolean[][] getbboard() {
         return bboard; }
-
 }
+
