@@ -3,8 +3,6 @@ package core;
 import tileengine.TETile;
 import tileengine.Tileset;
 
-import java.io.IOException;
-
 public class AutograderBuddy {
 
     /**

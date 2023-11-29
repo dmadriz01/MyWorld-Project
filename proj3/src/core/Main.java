@@ -69,7 +69,6 @@ public class Main {
                     break;
                 }
                 w.handle(key);
-//                w.runGameloop();
             }
             ter.renderFrame(w.getTiles());
         }
@@ -85,8 +84,8 @@ public class Main {
 
         int flower = w.getflowers();
 
-        double X = width -5;
-        double Y = height -2;
+        double X = width - 5;
+        double Y = height - 2;
 
         StdDraw.text(X, Y, "Score: " + flower);
 

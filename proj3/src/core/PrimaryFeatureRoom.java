@@ -7,11 +7,11 @@ import java.util.Random;
 
 public class PrimaryFeatureRoom {
     private TETile[][] board;
-    public int width;
-    public int height;
+    private int width;
+    private int height;
     private static final Random RANDOM = new Random(2873123L);
 
-    public PrimaryFeatureRoom(){
+    public PrimaryFeatureRoom() {
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -21,7 +21,7 @@ public class PrimaryFeatureRoom {
 
 }
 
-    private TETile buildroom(){
+    private TETile buildroom() {
         int tileNum = RANDOM.nextInt(3);
         TETile var10000 = switch (tileNum) {
             case 0 -> Tileset.WALL;

@@ -45,8 +45,8 @@ public class Screen {
 
         // Draw seed input
 
-        StdDraw.text(X, Y-5,"Seed: " + seedInput);
-        StdDraw.text(X, Y-10, "Press S to Start");
+        StdDraw.text(X, Y - 5,"Seed: " + seedInput);
+        StdDraw.text(X, Y - 10, "Press S to Start");
         StdDraw.show();
     }
 

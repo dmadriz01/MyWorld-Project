@@ -9,7 +9,7 @@ public class HUD {
     private int height;
     private boolean[][] bboard;
     private boolean isGameOver;
-    public boolean stopFlickering;
+    private boolean stopFlickering;
     private String previnfo;
 
     public HUD(boolean[][] bboard) {
@@ -33,8 +33,8 @@ public class HUD {
         StdDraw.enableDoubleBuffering();
         StdDraw.setPenColor(StdDraw.WHITE);
 
-        double X =5;
-        double Y = height-2;
+        double X = 5;
+        double Y = height - 2;
 
 //        String info = getMouseHoverObject();
 //
@@ -57,12 +57,12 @@ public class HUD {
     }
 
     public String getMouseHoverObject() {
-        if (mouseX >= 0 && mouseY >= 0 && mouseX < width && mouseY < height){
-            if (isValidCoordinate(mouseX,mouseY) && bboard[mouseX][mouseY]
-                    || isValidCoordinate(mouseX+1,mouseY) && bboard[mouseX + 1][mouseY]
-                    || isValidCoordinate(mouseX-1, mouseY) && bboard[mouseX - 1][mouseY]
-                    ||isValidCoordinate(mouseX, mouseY-1) &&  bboard[mouseX][mouseY - 1]
-                    || isValidCoordinate(mouseX, mouseY+1) && bboard[mouseX][mouseY + 1]) {
+        if (mouseX >= 0 && mouseY >= 0 && mouseX < width && mouseY < height) {
+            if (isValidCoordinate(mouseX, mouseY) && bboard[mouseX][mouseY]
+                    || isValidCoordinate(mouseX + 1,mouseY) && bboard[mouseX + 1][mouseY]
+                    || isValidCoordinate(mouseX - 1, mouseY) && bboard[mouseX - 1][mouseY]
+                    || isValidCoordinate(mouseX, mouseY - 1) &&  bboard[mouseX][mouseY - 1]
+                    || isValidCoordinate(mouseX, mouseY + 1) && bboard[mouseX][mouseY + 1]) {
                 previnfo = "Field";
                 return previnfo;
             } else {
@@ -77,12 +77,12 @@ public class HUD {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
-    public boolean isStopFlickering(){
+    public boolean isStopFlickering() {
         return stopFlickering;
     }
 
-    public void changeStopFlickering(){
-        if (stopFlickering){
+    public void changeStopFlickering() {
+        if (stopFlickering) {
             stopFlickering = false;
         }
         else {

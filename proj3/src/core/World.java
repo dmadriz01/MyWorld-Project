@@ -29,8 +29,8 @@ public class World {
     private int treasureY;
 
 
-    public World(int width, int height, long SEED) {
-        random = new Random(SEED);
+    public World(int width, int height, long seed) {
+        random = new Random(seed);
         board = new TETile[width][height];
         bboard = new boolean[width][height];
         roomList = new ArrayList<>();
@@ -39,7 +39,7 @@ public class World {
         avatarY = randomNum(height);
         allinput = new String();
         seedInputPhase = true;
-        allinput = "N" + SEED + "S";
+        allinput = "N" + seed + "S";
         flowers = 0;
         bboardCopy = new boolean[width][height];
         treasureX = randomNum(width);
@@ -64,7 +64,7 @@ public class World {
                 board[x][y] = Tileset.WATER;
             }
         }
-        worldMoves(width, height, scale);
+        worldMoves(width, height);
         closestRooms(width, height);
         buildSortedHallways(width, height);
         addBorders(width, height);
@@ -86,7 +86,7 @@ public class World {
 
 
 
-    private void worldMoves(int width, int height, int scale) {    // for duplicating rooms across the board
+    private void worldMoves(int width, int height) {    // for duplicating rooms across the board
         for (int x = 3; x < width - 3; x += 3 * scale) {   // iterates every other 5x5
             for (int y = 3; y < height - 3; y += 3 * scale) {   /*height/size*/
                 int roomx = randomNum(scale);
@@ -118,7 +118,6 @@ public class World {
                 }
             }
         }
-//        board[centersW][centersH] = Tileset.MOUNTAIN;
     }
 
     public void closestRooms(int width, int height) {
@@ -219,7 +218,7 @@ public class World {
                     if (bboard[i - 1][j - 1] && board[i][j] == Tileset.WATER) { //right top
                         board[i][j] = Tileset.TREE;
                     }
-                    if (bboard[i - 1][j + 1] && board[i][j] == Tileset.WATER) {//left top
+                    if (bboard[i - 1][j + 1] && board[i][j] == Tileset.WATER) { //left top
                         board[i][j] = Tileset.TREE;
                     }
                 }
@@ -243,15 +242,6 @@ public class World {
         char lower = Character.toLowerCase(key);
 
         if (seedInputPhase && Character.isLowerCase(lower)) {
-//                allinput += lower;
-
-
-//                try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
-//                    writer.write(lower);
-//                    writer.flush();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
             if (lower == 's') {
                 seedInputPhase = false;
             }
@@ -270,7 +260,7 @@ public class World {
             avatarX = avatarX + 1;
         }
         if (lower == 'c') {
-            if (bboardCopy[avatarX][avatarY]){
+            if (bboardCopy[avatarX][avatarY]) {
                 flowers++;
             }
             board[avatarX][avatarY] = Tileset.GRASS;
@@ -279,7 +269,6 @@ public class World {
 
 
         if (lower == 'w' || lower == 's' || lower == 'a' || lower == 'd' || lower == 'c') {
-//            allinput += lower;
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
                 writer.write(lower);
@@ -291,14 +280,14 @@ public class World {
 
     }
 
-    public void goingintoPrimary(){
+    /*public void goingintoPrimary(){
         if (boardcopy[avatarX][avatarY] == boardcopy[treasureX][treasureY]){
 
         }
-    }
+    }*/
 
 
-   public int getflowers(){
+   public int getflowers() {
         return flowers;
    }
 
