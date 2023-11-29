@@ -24,7 +24,7 @@ public class World {
     private String allinput;
     private boolean seedInputPhase;
     private int flowers;
-    private HUD mousehud;
+//    private HUD mousehud;
     private List<Room> adjRooms;
 
 

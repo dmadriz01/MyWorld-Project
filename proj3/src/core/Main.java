@@ -8,7 +8,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        displayMain();
+//        displayMain();
         int WIDTH = 50;
         int HEIGHT = 50;
         StringBuilder seed = new StringBuilder();
@@ -40,11 +40,11 @@ public class Main {
                     done = true;
                 }
             }
-            if (seedInputScreen) {
-                Screen.displaySeedInput(seed.toString());
-            } else {
-                displayMain();
-            }
+////            if (seedInputScreen) {
+////                Screen.displaySeedInput(seed.toString());
+////            } else {
+////                displayMain();
+//            }
         }
 
         if (w == null) {
@@ -61,7 +61,7 @@ public class Main {
                     quit = true;
                 }
                 if (quit && lower == 'q') {
-                    Screen.displayGameEnded();
+//                    Screen.displayGameEnded();
                     break;
                 }
 //                w.handle(key);
@@ -69,10 +69,10 @@ public class Main {
             ter.renderFrame(w.getTiles());
         }
     }
-    private static void displayMain() {
-        Screen screen = new Screen();
-        screen.displayMain();
-    }
+//    private static void displayMain() {
+//        Screen screen = new Screen();
+//        screen.displayMain();
+//    }
 
 
 
