@@ -35,9 +35,7 @@ public class Main {
                     } else if (lower == 's' && !seed.isEmpty()) {
                         w = new World(WIDTH, HEIGHT, Long.parseLong(seed.toString()));
                         boolean[][] bboard = w.getbboard();
-                        mousehud = new HUD(bboard);
-                        displayScore(w, WIDTH, HEIGHT);
-                        displayHUD();
+                        mousehud = new HUD(WIDTH, HEIGHT, bboard);
                         done = true;
                     }
                 } else if (lower == 'l') {
@@ -71,6 +69,9 @@ public class Main {
                 w.handle(key);
             }
             ter.renderFrame(w.getTiles());
+            displayScore(w, WIDTH, HEIGHT);
+            displayHUD();
+            StdDraw.show();
         }
     }
     private static void displayMain() {
@@ -89,7 +90,6 @@ public class Main {
 
         StdDraw.text(X, Y, "Score: " + flower);
 
-        StdDraw.show();
     }
 
     public static void displayHUD(){

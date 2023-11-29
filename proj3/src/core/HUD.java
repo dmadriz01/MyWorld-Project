@@ -12,7 +12,7 @@ public class HUD {
     private boolean stopFlickering;
     private String previnfo;
 
-    public HUD(boolean[][] bboard) {
+    public HUD(int width, int height, boolean[][] bboard) {
         // Set initial mouse coordinates
         this.mouseX = 0;
         this.mouseY = 0;
@@ -31,6 +31,7 @@ public class HUD {
 
     public void displayMouseHUD(String info) {
         StdDraw.enableDoubleBuffering();
+        StdDraw.setFont();
         StdDraw.setPenColor(StdDraw.WHITE);
 
         double X = 5;
@@ -40,7 +41,6 @@ public class HUD {
 //
 
         StdDraw.text(X, Y, "Tile: " + info);
-        StdDraw.show();
 
 //        if (!previnfo.equals(info)){
 //            StdDraw.text(X, Y, "Tile: " + info);
