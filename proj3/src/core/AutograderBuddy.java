@@ -32,11 +32,8 @@ public class AutograderBuddy {
         seed = Long.parseLong(seedString[1]);
 
         World w = null;
-        try {
-            w = new World(50, 50, seed);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        w = new World(50, 50, seed);
+
         return w.getTiles();
     }
 
