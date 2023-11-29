@@ -253,10 +253,8 @@ public class World {
 
     public Lights findNearestLight(int x, int y) {
         Lights min;
-        if (lighton) {
-            min = lights.get(0);
-        }
-        else min = lights.get(1);
+        if (lighton) { min = lights.get(0); }
+        else { min = lights.get(1);}
         for (int i = 1; i < lights.size(); i++) {
             if (dist2(lights.get(i).getX(), lights.get(i).getY(), x, y) < dist2(min.getX(), min.getY(), x, y)) {
                 min = lights.get(i);
@@ -294,7 +292,7 @@ public class World {
             board[avatarX][avatarY] = Tileset.GRASS;
             bboardCopy[avatarX][avatarY] = false;
         }
-        if (lower == 'o' ) {
+        if (lower == 'o') {
             lighton = !lighton;
         }
 
@@ -363,13 +361,9 @@ public class World {
 
 
 
-   public int getflowers() {
-        return flowers;
-    }
+   public int getflowers() { return flowers; }
 
-    public boolean[][] getbboard() {
-        return bboard;
-    }
+    public boolean[][] getbboard() { return bboard; }
 
 
 }

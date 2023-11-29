@@ -102,7 +102,7 @@ public class Main {
 
     }
 
-    public static void displayHUD(){
+    public static void displayHUD() {
         mousehud.updateMousePosition();
         String hoverInfo = mousehud.getMouseHoverObject();
         mousehud.displayMouseHUD(hoverInfo);
