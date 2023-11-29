@@ -265,31 +265,47 @@ public class World {
 
     }
 
+    public String getAllinput() {
+        return allinput;
+    }
+
     public static World handleStringInput(String input) {
         if (Character.toLowerCase(input.charAt(0)) == 'l') {
             try {
                 BufferedReader br
                         = new BufferedReader(new FileReader("output.txt"));
-                return World.handleStringInput(br.readLine());
+                World w = World.handleStringInput(br.readLine());
+
+                String lower = input.toLowerCase();
+
+                String actualGame = lower.substring(1);
+
+                for (int i = 0; i < actualGame.length(); i++) {
+                    w.handle(actualGame.charAt(i));
+                }
+                return w;
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            long seed;
+
+            String lower = input.toLowerCase();
+            String[] seedString = lower.split("[ns]");
+
+            seed = Long.parseLong(seedString[1]);
+
+            World w = new World(50, 50, seed);
+
+            String actualGame = lower.substring(lower.indexOf('s') + 1);
+
+            for (int i = 0; i < actualGame.length(); i++) {
+                w.handle(actualGame.charAt(i));
+            }
+            return w;
+
         }
-        long seed;
-
-        String lower = input.toLowerCase();
-        String[] seedString = lower.split("[ns]");
-
-        seed = Long.parseLong(seedString[1]);
-
-        World w = new World(50, 50, seed);
-
-        String actualGame = lower.substring(lower.indexOf('s')+1);
-
-        for (int i = 0; i < actualGame.length(); i++) {
-            w.handle(actualGame.charAt(i));
-        }
-        return w;
+        return null;
     }
 
     public void save() {

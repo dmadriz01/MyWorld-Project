@@ -22,6 +22,12 @@ public class AutograderBuddy {
 
         World w = World.handleStringInput(input);
 
+        if (input.length() > 2) {
+            if (input.charAt(input.length() - 2) == ':' && Character.toLowerCase(input.charAt(input.length() - 1)) == 'q') {
+                w.save();
+            }
+        }
+
         return w.getTiles();
     }
 
