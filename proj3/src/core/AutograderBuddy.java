@@ -3,6 +3,8 @@ package core;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import java.io.IOException;
+
 public class AutograderBuddy {
 
     /**
@@ -29,7 +31,12 @@ public class AutograderBuddy {
 
         seed = Long.parseLong(seedString[1]);
 
-        World w = new World(50, 50, seed);
+        World w = null;
+        try {
+            w = new World(50, 50, seed);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return w.getTiles();
     }
 
