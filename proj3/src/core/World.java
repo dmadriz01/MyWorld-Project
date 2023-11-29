@@ -41,7 +41,7 @@ public class World {
         allinput = "N" + SEED + "S";
         flowers = 0;
         bboardCopy = new boolean[width][height];
-        mousehud = new HUD(width, height, bboard);
+//        mousehud = new HUD(width, height, bboard);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(allinput);
