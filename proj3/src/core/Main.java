@@ -3,6 +3,8 @@ package core;
 import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TERenderer;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
@@ -39,6 +41,13 @@ public class Main {
                         done = true;
                     }
                 } else if (lower == 'l') {
+                    // get the input from file,
+                    // do world.handleInput(input)
+                    BufferedReader br
+                            = new BufferedReader(new FileReader("output.txt"));
+                    w = World.handleStringInput(br.readLine());
+                    boolean[][] bboard = w.getbboard();
+                    mousehud = new HUD(WIDTH, HEIGHT, bboard);
                     done = true;
                 }
             }
@@ -64,6 +73,7 @@ public class Main {
                 }
                 if (quit && lower == 'q') {
                     Screen.displayGameEnded();
+                    w.save();
                     break;
                 }
                 w.handle(key);

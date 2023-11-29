@@ -3,9 +3,7 @@ package core;
 import tileengine.TETile;
 import tileengine.Tileset;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 
@@ -44,13 +42,6 @@ public class World {
         bboardCopy = new boolean[width][height];
         treasureX = randomNum(width);
         treasureY = randomNum(height);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
-            writer.write(allinput);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         for (Room room : roomList) {
             System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
@@ -269,17 +260,48 @@ public class World {
 
 
         if (lower == 'w' || lower == 's' || lower == 'a' || lower == 'd' || lower == 'c') {
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
-                writer.write(lower);
-                writer.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            allinput += lower;
         }
 
     }
 
+    public static World handleStringInput(String input) {
+        if (Character.toLowerCase(input.charAt(0)) == 'l') {
+            try {
+                BufferedReader br
+                        = new BufferedReader(new FileReader("output.txt"));
+                return World.handleStringInput(br.readLine());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        long seed;
+
+        String lower = input.toLowerCase();
+        String[] seedString = lower.split("[ns]");
+
+        seed = Long.parseLong(seedString[1]);
+
+        World w = new World(50, 50, seed);
+
+        String actualGame = lower.substring(lower.indexOf('s')+1);
+
+        for (int i = 0; i < actualGame.length(); i++) {
+            w.handle(actualGame.charAt(i));
+        }
+        return w;
+    }
+
+    public void save() {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", false))) {
+
+            writer.write(allinput);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /*public void goingintoPrimary(){
         if (boardcopy[avatarX][avatarY] == boardcopy[treasureX][treasureY]){
 

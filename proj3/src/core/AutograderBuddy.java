@@ -20,14 +20,7 @@ public class AutograderBuddy {
 
     public static TETile[][] getWorldFromInput(String input) {
 
-        long seed;
-
-        String lower = input.toLowerCase();
-        String[] seedString = lower.split("[ns]");
-
-        seed = Long.parseLong(seedString[1]);
-
-        World w = new World(50, 50, seed);
+        World w = World.handleStringInput(input);
 
         return w.getTiles();
     }
