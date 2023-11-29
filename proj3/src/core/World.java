@@ -3,8 +3,10 @@ package core;
 import tileengine.TETile;
 import tileengine.Tileset;
 
+import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 
 
 public class World {
@@ -23,8 +25,10 @@ public class World {
     private boolean seedInputPhase;
     private int flowers;
     private List<Room> adjRooms;
-    private int treasureX;
-    private int treasureY;
+
+    private boolean inRoom;
+    private List<Lights> lights;
+    private boolean lighton;
 
 
     public World(int width, int height, long seed) {
@@ -40,15 +44,10 @@ public class World {
         allinput = "N" + seed + "S";
         flowers = 0;
         bboardCopy = new boolean[width][height];
-        treasureX = randomNum(width);
-        treasureY = randomNum(height);
+        inRoom = false;
+        lights = new ArrayList<>();
+        lighton = true;
 
-        for (Room room : roomList) {
-            System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
-            System.out.println("Room dimensions: " + room.getWidth() + " x " + room.getHeight());
-            System.out.println("Room center: " + room.getCenterX() + " x " + room.getCenterY());
-            System.out.println();
-        }
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -68,14 +67,18 @@ public class World {
             avatarX = randomNum(width);
             avatarY = randomNum(height);
         }
-        while (!bboard[treasureX][treasureY]) {
-            treasureX = randomNum(width);
-            treasureY = randomNum(height);
+
+        for (int i = 0; i < 9; i++) {
+            int x = randomNum(width);
+            int y = randomNum(height);
+            while (!bboard[x][y]) {
+                x = randomNum(width);
+                y = randomNum(height);
+            }
+            lights.add(new Lights(x, y));
         }
 
     }
-
-
 
     private void worldMoves(int width, int height) {    // for duplicating rooms across the board
         for (int x = 3; x < width - 3; x += 3 * scale) {   // iterates every other 5x5
@@ -109,6 +112,7 @@ public class World {
                 }
             }
         }
+
     }
 
     public void closestRooms(int width, int height) {
@@ -223,9 +227,39 @@ public class World {
         for (int i = 0; i < board.length; i++) {
             boardcopy[i] = Arrays.copyOf(board[i], board[0].length);
         }
+        for (int x = 0; x < boardcopy.length; x++) {
+            for (int y = 0; y < boardcopy.length; y++) {
+                if (bboard[x][y]) {
+                    Lights l = findNearestLight(x, y);
+                    int blue = Math.max(0, Math.min(255, dist2(l.getX(), l.getY(), x, y) * 20));
+                    if (board[x][y] == Tileset.FLOWER) {
+                        boardcopy[x][y] = new TETile('.', Color.white, new Color(0, 0, blue),
+                                "flower");
+                    } else {
+                        boardcopy[x][y] = new TETile(Tileset.WATER.character(), Color.darkGray, new Color(0, 0, blue), "nothing");
+                    }
+                }
+            }
+        }
         boardcopy[avatarX][avatarY] = Tileset.AVATAR;
-        boardcopy[treasureX][treasureY] = Tileset.SAND;
+
         return boardcopy;
+    }
+
+    public int dist2(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1-x2) + Math.abs(y1-y2);
+    }
+
+    public Lights findNearestLight(int x, int y) {
+        Lights min;
+        if (lighton) min = lights.get(0);
+        else min = lights.get(1);
+        for (int i = 1; i < lights.size(); i++) {
+            if (dist2(lights.get(i).getX(), lights.get(i).getY(), x, y) < dist2(min.getX(), min.getY(), x, y)) {
+                min = lights.get(i);
+            }
+        }
+        return min;
     }
 
 
@@ -257,9 +291,13 @@ public class World {
             board[avatarX][avatarY] = Tileset.GRASS;
             bboardCopy[avatarX][avatarY] = false;
         }
+        if (lower == 'o' ) {
+            lighton = !lighton;
+        }
 
 
-        if (lower == 'w' || lower == 's' || lower == 'a' || lower == 'd' || lower == 'c') {
+
+        if (lower == 'w' || lower == 's' || lower == 'a' || lower == 'd' || lower == 'c' || lower == 'o') {
             allinput += lower;
         }
 
@@ -318,11 +356,8 @@ public class World {
             e.printStackTrace();
         }
     }
-    /*public void goingintoPrimary(){
-        if (boardcopy[avatarX][avatarY] == boardcopy[treasureX][treasureY]){
 
-        }
-    }*/
+
 
 
    public int getflowers() {
