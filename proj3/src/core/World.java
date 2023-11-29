@@ -43,10 +43,6 @@ public class World {
 
     }
 
-
-
-
-
     private void worldMoves(int width, int height, int scale) {    // for duplicating rooms across the board
         for (int x = 3; x < width - 3; x += 3 * scale) {   // iterates every other 5x5
             for (int y = 3; y < height - 3; y += 3 * scale) {   /*height/size*/

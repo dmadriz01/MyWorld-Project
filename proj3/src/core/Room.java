@@ -42,7 +42,7 @@ public class Room {
         return centerX;
     }
 
-    public int getCenterY(){
+    public int getCenterY() {
         return centerY;
     }
 }
