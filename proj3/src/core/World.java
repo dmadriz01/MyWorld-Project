@@ -34,28 +34,28 @@ public class World {
         bboard = new boolean[width][height];
         roomList = new ArrayList<>();
         roomHash = new HashMap<>();
-        avatarX = randomNum(width);
-        avatarY = randomNum(height);
-        allinput = new String();
-        seedInputPhase = true;
-        allinput = "N" + SEED + "S";
-        flowers = 0;
-        bboardCopy = new boolean[width][height];
+//        avatarX = randomNum(width);
+//        avatarY = randomNum(height);
+//        allinput = new String();
+//        seedInputPhase = true;
+//        allinput = "N" + SEED + "S";
+//        flowers = 0;
+//        bboardCopy = new boolean[width][height];
 //        mousehud = new HUD(width, height, bboard);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
-            writer.write(allinput);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
+//            writer.write(allinput);
+//            writer.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        for (Room room : roomList) {
-            System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
-            System.out.println("Room dimensions: " + room.getWidth() + " x " + room.getHeight());
-            System.out.println("Room center: " + room.getCenterX() + " x " + room.getCenterY());
-            System.out.println();
-        }
+//        for (Room room : roomList) {
+//            System.out.println("Room coordinates: (" + room.getX() + ", " + room.getY() + ")");
+//            System.out.println("Room dimensions: " + room.getWidth() + " x " + room.getHeight());
+//            System.out.println("Room center: " + room.getCenterX() + " x " + room.getCenterY());
+//            System.out.println();
+//        }
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -67,15 +67,15 @@ public class World {
         buildSortedHallways(width, height);
         addBorders(width, height);
 
-        for (int i = 0; i < width; i++) {
-            System.arraycopy(bboard[i], 0, bboardCopy[i], 0, height);
-        }
-
-
-        while (!bboard[avatarX][avatarY]) {
-            avatarX = randomNum(width);
-            avatarY = randomNum(height);
-        }
+//        for (int i = 0; i < width; i++) {
+//            System.arraycopy(bboard[i], 0, bboardCopy[i], 0, height);
+//        }
+//
+//
+//        while (!bboard[avatarX][avatarY]) {
+//            avatarX = randomNum(width);
+//            avatarY = randomNum(height);
+//        }
     }
 
 
