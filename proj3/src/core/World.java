@@ -1,5 +1,5 @@
 package core;
-import edu.princeton.cs.algs4.StdDraw;
+
 import tileengine.TETile;
 import tileengine.Tileset;
 
@@ -24,7 +24,6 @@ public class World {
     private String allinput;
     private boolean seedInputPhase;
     private int flowers;
-    private HUD mousehud;
     private List<Room> adjRooms;
 
 
@@ -41,7 +40,6 @@ public class World {
         allinput = "N" + SEED + "S";
         flowers = 0;
         bboardCopy = new boolean[width][height];
-        mousehud = new HUD(width, height, bboard);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(allinput);
@@ -226,8 +224,6 @@ public class World {
 
     public TETile[][] getTiles() {
         TETile[][] boardcopy = new TETile[board.length][board[0].length];
-        displayScore(board.length, board[0].length);
-        displayHUD();
         for (int i = 0; i < board.length; i++) {
             boardcopy[i] = Arrays.copyOf(board[i], board[0].length);
         }
@@ -287,34 +283,13 @@ public class World {
     }
 
 
-    public void displayScore(int width, int height) {
-        StdDraw.setPenColor(StdDraw.WHITE);
-        StdDraw.setFont();
-
-        int flower = flowers;
-
-        double X = width -5;
-        double Y = height -2;
-
-        StdDraw.text(X, Y, "Score: " + flower);
-
-        StdDraw.show();
-    }
+   public int getflowers(){
+        return flowers;
+   }
 
     public boolean[][] getbboard() {
         return bboard;
     }
 
-    public void displayHUD(){
-        mousehud.updateMousePosition();
-        String hoverInfo = mousehud.getMouseHoverObject();
-        mousehud.displayMouseHUD(hoverInfo);
 
-//        if (mousehud.isStopFlickering()) {
-//
-//            mousehud.changeStopFlickering();
-//        } else {
-//            StdDraw.show();
-//        }
-    }
 }

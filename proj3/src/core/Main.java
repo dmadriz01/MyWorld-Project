@@ -6,13 +6,18 @@ import tileengine.TERenderer;
 import java.io.IOException;
 
 public class Main {
+    private static HUD mousehud;
+    private static World w;
+    private static boolean[][] bboard;
+
 
     public static void main(String[] args) throws IOException {
         displayMain();
         int WIDTH = 50;
         int HEIGHT = 50;
         StringBuilder seed = new StringBuilder();
-        World w = null;
+        w = null;
+
 
 
         TERenderer ter = new TERenderer();
@@ -32,6 +37,8 @@ public class Main {
                         seed.append(lower);
                     } else if (lower == 's' && !seed.isEmpty()) {
                         w = new World(WIDTH, HEIGHT, Long.parseLong(seed.toString()));
+                        bboard = w.getbboard();
+                        mousehud = new HUD(bboard);
 //                            hud.updateMousePosition();
 //                            hud.displayMouseHUD();
                         done = true;
@@ -73,6 +80,33 @@ public class Main {
     private static void displayMain() {
         Screen screen = new Screen();
         screen.displayMain();
+    }
+
+    public void displayScore(World w, int width, int height) {
+        StdDraw.setPenColor(StdDraw.WHITE);
+        StdDraw.setFont();
+
+        int flower = w.getflowers();
+
+        double X = width -5;
+        double Y = height -2;
+
+        StdDraw.text(X, Y, "Score: " + flower);
+
+        StdDraw.show();
+    }
+
+    public void displayHUD(){
+        mousehud.updateMousePosition();
+        String hoverInfo = mousehud.getMouseHoverObject();
+        mousehud.displayMouseHUD(hoverInfo);
+
+//        if (mousehud.isStopFlickering()) {
+//
+//            mousehud.changeStopFlickering();
+//        } else {
+//            StdDraw.show();
+//        }
     }
 
 

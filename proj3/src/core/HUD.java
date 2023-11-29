@@ -12,7 +12,7 @@ public class HUD {
     public boolean stopFlickering;
     private String previnfo;
 
-    public HUD(int  width, int height, boolean[][] bboard) {
+    public HUD(boolean[][] bboard) {
         // Set initial mouse coordinates
         this.mouseX = 0;
         this.mouseY = 0;
