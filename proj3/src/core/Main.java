@@ -14,13 +14,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         displayMain();
-        int WIDTH = 50;
-        int HEIGHT = 50;
+        int width = 50;
+        int height = 50;
         StringBuilder seed = new StringBuilder();
         w = null;
 
         TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
+        ter.initialize(width, height);
 
         boolean done = false;
         boolean seedInputScreen = false;
@@ -35,9 +35,9 @@ public class Main {
                     if (Character.isDigit(lower)) {
                         seed.append(lower);
                     } else if (lower == 's' && !seed.isEmpty()) {
-                        w = new World(WIDTH, HEIGHT, Long.parseLong(seed.toString()));
+                        w = new World(width, height, Long.parseLong(seed.toString()));
                         boolean[][] bboard = w.getbboard();
-                        mousehud = new HUD(WIDTH, HEIGHT, bboard);
+                        mousehud = new HUD(width, height, bboard);
                         done = true;
                     }
                 } else if (lower == 'l') {
@@ -47,7 +47,7 @@ public class Main {
                             = new BufferedReader(new FileReader("output.txt"));
                     w = World.handleStringInput(br.readLine());
                     boolean[][] bboard = w.getbboard();
-                    mousehud = new HUD(WIDTH, HEIGHT, bboard);
+                    mousehud = new HUD(width, height, bboard);
                     done = true;
                 }
             }
@@ -59,7 +59,7 @@ public class Main {
         }
 
         if (w == null) {
-            w = new World(WIDTH, HEIGHT, 5);
+            w = new World(width, height, 5);
         }
 
         boolean quit = false;
@@ -79,7 +79,7 @@ public class Main {
                 w.handle(key);
             }
             ter.renderFrame(w.getTiles());
-            displayScore(w, WIDTH, HEIGHT);
+            displayScore(width, height);
             displayHUD();
             StdDraw.show();
         }
@@ -89,7 +89,7 @@ public class Main {
         screen.displayMain();
     }
 
-    public static void displayScore(World w, int width, int height) {
+    public static void displayScore(int width, int height) {
         StdDraw.setPenColor(StdDraw.WHITE);
         StdDraw.setFont();
 
@@ -106,13 +106,6 @@ public class Main {
         mousehud.updateMousePosition();
         String hoverInfo = mousehud.getMouseHoverObject();
         mousehud.displayMouseHUD(hoverInfo);
-
-//        if (mousehud.isStopFlickering()) {
-//
-//            mousehud.changeStopFlickering();
-//        } else {
-//            StdDraw.show();
-//        }
     }
 
 

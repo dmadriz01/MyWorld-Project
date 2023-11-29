@@ -17,7 +17,7 @@ public class HUD {
         this.mouseX = 0;
         this.mouseY = 0;
         this.width = width;
-        this. height = height;
+        this.height = height;
         this.bboard = bboard;
         isGameOver = false;
         previnfo = "";
@@ -36,32 +36,16 @@ public class HUD {
 
         double X = 5;
         double Y = height - 2;
-
-//        String info = getMouseHoverObject();
-//
-
         StdDraw.text(X, Y, "Tile: " + info);
-
-//        if (!previnfo.equals(info)){
-//            StdDraw.text(X, Y, "Tile: " + info);
-//            StdDraw.show();
-//            previnfo = info;
-//        }
-
-//        StdDraw.text(X, Y, "Tile: " + info);
-//        if (this.info == info){
-//
-//        }
-
 
     }
 
     public String getMouseHoverObject() {
         if (mouseX >= 0 && mouseY >= 0 && mouseX < width && mouseY < height) {
             if (isValidCoordinate(mouseX, mouseY) && bboard[mouseX][mouseY]
-                    || isValidCoordinate(mouseX + 1,mouseY) && bboard[mouseX + 1][mouseY]
+                    || isValidCoordinate(mouseX + 1, mouseY) && bboard[mouseX + 1][mouseY]
                     || isValidCoordinate(mouseX - 1, mouseY) && bboard[mouseX - 1][mouseY]
-                    || isValidCoordinate(mouseX, mouseY - 1) &&  bboard[mouseX][mouseY - 1]
+                    || isValidCoordinate(mouseX, mouseY - 1) && bboard[mouseX][mouseY - 1]
                     || isValidCoordinate(mouseX, mouseY + 1) && bboard[mouseX][mouseY + 1]) {
                 previnfo = "Field";
                 return previnfo;
@@ -84,21 +68,9 @@ public class HUD {
     public void changeStopFlickering() {
         if (stopFlickering) {
             stopFlickering = false;
-        }
-        else {
+        } else {
             stopFlickering = true;
         }
     }
-
-    // Your game loop
-//    public void runGame() {
-//
-//        while (!isGameOver) {
-//            updateMousePosition();
-//            String hoverInfo = getMouseHoverObject();
-//            displayMouseHUD(hoverInfo);
-//
-//
-//        }
-//    }
 }
+

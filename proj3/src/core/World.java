@@ -236,7 +236,8 @@ public class World {
                         boardcopy[x][y] = new TETile('.', Color.white, new Color(0, 0, blue),
                                 "flower");
                     } else {
-                        boardcopy[x][y] = new TETile(Tileset.WATER.character(), Color.darkGray, new Color(0, 0, blue), "nothing");
+                        boardcopy[x][y] = new TETile(Tileset.WATER.character(), Color.darkGray,
+                                new Color(0, 0, blue), "nothing");
                     }
                 }
             }
@@ -247,12 +248,14 @@ public class World {
     }
 
     public int dist2(int x1, int y1, int x2, int y2) {
-        return Math.abs(x1-x2) + Math.abs(y1-y2);
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
 
     public Lights findNearestLight(int x, int y) {
         Lights min;
-        if (lighton) min = lights.get(0);
+        if (lighton) {
+            min = lights.get(0);
+        }
         else min = lights.get(1);
         for (int i = 1; i < lights.size(); i++) {
             if (dist2(lights.get(i).getX(), lights.get(i).getY(), x, y) < dist2(min.getX(), min.getY(), x, y)) {
@@ -362,7 +365,7 @@ public class World {
 
    public int getflowers() {
         return flowers;
-   }
+    }
 
     public boolean[][] getbboard() {
         return bboard;
