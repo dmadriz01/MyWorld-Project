@@ -8,7 +8,6 @@ import java.io.IOException;
 public class Main {
     private static HUD mousehud;
     private static World w;
-    private static boolean[][] bboard;
 
 
     public static void main(String[] args) throws IOException {
@@ -17,8 +16,6 @@ public class Main {
         int HEIGHT = 50;
         StringBuilder seed = new StringBuilder();
         w = null;
-
-
 
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
@@ -37,10 +34,10 @@ public class Main {
                         seed.append(lower);
                     } else if (lower == 's' && !seed.isEmpty()) {
                         w = new World(WIDTH, HEIGHT, Long.parseLong(seed.toString()));
-                        bboard = w.getbboard();
+                        boolean[][] bboard = w.getbboard();
                         mousehud = new HUD(bboard);
-//                            hud.updateMousePosition();
-//                            hud.displayMouseHUD();
+                        displayScore(w, WIDTH, HEIGHT);
+                        displayHUD();
                         done = true;
                     }
                 } else if (lower == 'l') {
@@ -82,7 +79,7 @@ public class Main {
         screen.displayMain();
     }
 
-    public void displayScore(World w, int width, int height) {
+    public static void displayScore(World w, int width, int height) {
         StdDraw.setPenColor(StdDraw.WHITE);
         StdDraw.setFont();
 
@@ -96,7 +93,7 @@ public class Main {
         StdDraw.show();
     }
 
-    public void displayHUD(){
+    public static void displayHUD(){
         mousehud.updateMousePosition();
         String hoverInfo = mousehud.getMouseHoverObject();
         mousehud.displayMouseHUD(hoverInfo);

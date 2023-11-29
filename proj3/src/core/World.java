@@ -11,7 +11,7 @@ import java.util.*;
 
 public class World {
     private TETile[][] board;
-
+    private TETile[][] boardcopy;
     private Random random;
     private int scale = 5; //comparable to holesize
 
@@ -25,6 +25,8 @@ public class World {
     private boolean seedInputPhase;
     private int flowers;
     private List<Room> adjRooms;
+    private int treasureX;
+    private int treasureY;
 
 
     public World(int width, int height, long SEED) {
@@ -40,6 +42,8 @@ public class World {
         allinput = "N" + SEED + "S";
         flowers = 0;
         bboardCopy = new boolean[width][height];
+        treasureX = randomNum(width);
+        treasureY = randomNum(height);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
             writer.write(allinput);
@@ -69,14 +73,16 @@ public class World {
             System.arraycopy(bboard[i], 0, bboardCopy[i], 0, height);
         }
 
-
         while (!bboard[avatarX][avatarY]) {
             avatarX = randomNum(width);
             avatarY = randomNum(height);
         }
+        while (!bboard[treasureX][treasureY]) {
+            treasureX = randomNum(width);
+            treasureY = randomNum(height);
+        }
+
     }
-
-
 
 
 
@@ -223,11 +229,12 @@ public class World {
 
 
     public TETile[][] getTiles() {
-        TETile[][] boardcopy = new TETile[board.length][board[0].length];
+        boardcopy = new TETile[board.length][board[0].length];
         for (int i = 0; i < board.length; i++) {
             boardcopy[i] = Arrays.copyOf(board[i], board[0].length);
         }
         boardcopy[avatarX][avatarY] = Tileset.AVATAR;
+        boardcopy[treasureX][treasureY] = Tileset.SAND;
         return boardcopy;
     }
 
@@ -235,17 +242,16 @@ public class World {
     public void handle(char key) {
         char lower = Character.toLowerCase(key);
 
-        if (seedInputPhase) {
+        if (seedInputPhase && Character.isLowerCase(lower)) {
+//                allinput += lower;
 
 
-            if (Character.isLowerCase(lower)) {
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
-                    writer.write(lower);
-                    writer.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+//                try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
+//                    writer.write(lower);
+//                    writer.flush();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             if (lower == 's') {
                 seedInputPhase = false;
             }
@@ -263,8 +269,18 @@ public class World {
         if (lower == 'd' && bboard[avatarX + 1][avatarY]) {
             avatarX = avatarX + 1;
         }
+        if (lower == 'c') {
+            if (bboardCopy[avatarX][avatarY]){
+                flowers++;
+            }
+            board[avatarX][avatarY] = Tileset.GRASS;
+            bboardCopy[avatarX][avatarY] = false;
+        }
 
-        if (lower == 'w' || lower == 's' || lower == 'a' || lower == 'd') {
+
+        if (lower == 'w' || lower == 's' || lower == 'a' || lower == 'd' || lower == 'c') {
+//            allinput += lower;
+
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
                 writer.write(lower);
                 writer.flush();
@@ -273,12 +289,11 @@ public class World {
             }
         }
 
-        if (lower == 'c') {
-            if (bboardCopy[avatarX][avatarY]){
-                flowers++;
-            }
-            board[avatarX][avatarY] = Tileset.GRASS;
-            bboardCopy[avatarX][avatarY] = false;
+    }
+
+    public void goingintoPrimary(){
+        if (boardcopy[avatarX][avatarY] == boardcopy[treasureX][treasureY]){
+
         }
     }
 
