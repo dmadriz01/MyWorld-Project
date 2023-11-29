@@ -35,7 +35,7 @@ public class World {
                 board[x][y] = Tileset.WATER;
             }
         }
-        worldMoves(width, height, scale);
+        worldMoves(width, height);
         closestRooms(width, height);
         buildSortedHallways(width, height);
         addBorders(width, height);
@@ -43,7 +43,7 @@ public class World {
 
     }
 
-    private void worldMoves(int width, int height, int scale) {    // for duplicating rooms across the board
+    private void worldMoves(int width, int height) {    // for duplicating rooms across the board
         for (int x = 3; x < width - 3; x += 3 * scale) {   // iterates every other 5x5
             for (int y = 3; y < height - 3; y += 3 * scale) {   /*height/size*/
                 int roomx = randomNum(scale);
@@ -175,7 +175,7 @@ public class World {
                     if (bboard[i - 1][j - 1] && board[i][j] == Tileset.WATER) { //right top
                         board[i][j] = Tileset.TREE;
                     }
-                    if (bboard[i - 1][j + 1] && board[i][j] == Tileset.WATER) {//left top
+                    if (bboard[i - 1][j + 1] && board[i][j] == Tileset.WATER) { //left top
                         board[i][j] = Tileset.TREE;
                     }
                 }
