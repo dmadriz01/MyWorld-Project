@@ -27,8 +27,8 @@ public class AutograderBuddy {
         int HEIGHT = 50;
         long seed;
 
-        TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
+//        TERenderer ter = new TERenderer();
+//        ter.initialize(WIDTH, HEIGHT);
 
         String lower = input.toLowerCase();
         String[] seedString = lower.split("[ns]");
